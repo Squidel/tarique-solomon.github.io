@@ -80,30 +80,46 @@
           <h4 id="type-text"></h4>
         </div>
         <div class="intro-buttons">
-          <button class="btn common-btn">Hire Me</button>
-          <button class="btn ghost-btn">Get Resume</button>
+          <a
+            href="mailto:tariquesolomonwrk@gmail.com?subject=Reaching Out"
+            class="btn common-btn"
+            >Email Me</a
+          >
+          <a href="#projects" class="btn ghost-btn">My projects</a>
         </div>
 
         <div class="social-links">
           <div class="footer-menu">
             <ul class="footer-menu-list">
-              <li class="footer-list-items">
+              <!-- <li class="footer-list-items">
                 <a class="footer-links" href="#">
                   <i class="fab fa-facebook-f"></i>
                 </a>
-              </li>
+              </li> -->
               <li class="footer-list-items">
-                <a class="footer-links" href="#">
-                  <i class="fab fa-twitter"></i>
+                <a
+                  target="_blank"
+                  class="footer-links"
+                  href="mailto:tariquesolomonwrk@gmail.com?subject=Reaching Out"
+                >
+                  <i class="fa fa-envelope"></i>
                 </a>
               </li>
               <li class="footer-list-items">
-                <a class="footer-links" href="#">
-                  <i class="fab fa-instagram"></i>
+                <a
+                  target="_blank"
+                  class="footer-links"
+                  href="https://github.com/Squidel"
+                >
+                  <i class="fab fa-github"></i>
                 </a>
               </li>
               <li class="footer-list-items">
-                <a class="footer-links" href="#">
+                <a
+                  target="_blank"
+                  class="footer-links"
+                  href="https://www.linkedin.com/in/tarique-solomon-170489245"
+                >
                   <i class="fab fa-linkedin-in"></i>
                 </a>
               </li>
@@ -224,7 +240,7 @@
     <section class="delimiter"></section>
 
     <!-- Services Section -->
-    <section class="services" id="services">
+    <section class="services" id="projects">
       <div class="services-heading">
         <h1 class="my-heading text-center">Projects</h1>
       </div>
@@ -321,7 +337,8 @@
           It probably needs a little cleanup but it worked to solve the problem at hand.`,
           null,
           getCardImages("a"),
-          null
+          null,
+          "https://github.com/Squidel/table-accordion.git"
         );
         addCard(
           "#projects-container",
@@ -332,7 +349,8 @@
           `,
           null,
           getCardImages("a"),
-          null
+          null,
+          "https://github.com/Squidel/EmailService"
         );
         addCard(
           "#projects-container",
@@ -341,7 +359,8 @@
           allow a user to define the transitions of a record between states. It also allows the user to define triggers to run some actions (the state machine bit). All in all there's definitely some promise here`,
           null,
           getCardImages("a"),
-          null
+          null,
+          "https://github.com/Squidel/workflow_engine"
         );
 
         addCard(
@@ -350,18 +369,20 @@
           `Finally, a project not inspired by work. Was just messing around with MonoGame framework, and created a clone of the Trex game you see in Chrome (you know, when the net fails)`,
           null,
           getCardImages("a"),
-          null
+          null,
+          "https://github.com/Squidel/Trex_Clone"
         );
 
         addCard(
           "#projects-container",
-          `Promotions 876`,
+          `876Promotions`,
           `A flutter project, back to work. I helped a friend refactor his flutter website, while adding some functionality for dynamically adding new content. There was a need
           for the end user to be able to add new content (think blog posts but not really), without having to add new records to the database, new html files etc. A fun little exercise, and it definitely
           increased my appreciation of Python`,
           null,
           getCardImages("a"),
-          null
+          null,
+          "https://876promotions.com/"
         );
       };
       const loadSkills = () => {

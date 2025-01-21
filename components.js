@@ -8,13 +8,22 @@ if (typeof Chart === "undefined") {
   console.error("Chart.js is required for chart components");
 }
 
-function addCard(containerId, title, value, variance, imgUrl, subtext) {
+function addCard(
+  containerId,
+  title,
+  value,
+  variance,
+  imgUrl,
+  subtext,
+  url = null
+) {
   if (typeof $ === "undefined") {
     console.error("jQuery is required to use addCard");
     return;
   }
   const cardHtml = `
               <div class="p-3">
+              <a class="card-anchor" href="${url}"target="_blank">
                 <div class="card-parent rounded py-5 px-3">
                   <div class="d-inline-flex align-items-center ms-md-3 mb-4">
                       <h3 class="card-title fw-bold mb-0">${title}</h3>
@@ -48,6 +57,7 @@ function addCard(containerId, title, value, variance, imgUrl, subtext) {
                       </div>
                   </div>
                 </div>
+                </a>
             </div>
             `;
 

@@ -29,16 +29,55 @@ const jucktype = (containerId, textToType, typingSpeed = 100) => {
     return;
   }
 
-  let $target = $(containerId);
+  const $target = $(
+    containerId.startsWith("#") ? containerId : `#${containerId}`
+  );
+  if (!$target.length) {
+    console.error("Target container not found");
+    return;
+  }
+
   let index = 0;
+  let isMistyped = false;
+  let correctionIndex = 0;
+  const random = "rqdsd";
 
   function type() {
     if (index < textToType.length) {
+      if (index / textToType.length >= 2 / 3 && !isMistyped) {
+        isMistyped = true;
+        setTimeout(mistype, typingSpeed);
+        return;
+      }
+
       $target.append(textToType[index]);
       index++;
       setTimeout(type, typingSpeed);
     }
   }
+
+  function mistype() {
+    if (correctionIndex < random.length) {
+      $target.append(random[correctionIndex]);
+      correctionIndex++;
+      setTimeout(mistype, typingSpeed);
+    } else {
+      correctMistake();
+    }
+  }
+
+  function correctMistake() {
+    if (correctionIndex > 0) {
+      let content = $target.html();
+      $target.html(content.slice(0, -1)); // Remove the last character
+      correctionIndex--;
+      setTimeout(correctMistake, typingSpeed);
+    } else {
+      // isMistyped = false;
+      setTimeout(type, typingSpeed);
+    }
+  }
+
   type();
 };
 

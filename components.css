@@ -220,3 +220,8 @@
       .cs-next:hover {
         animation: bounce-twice 0.8s ease infinite;
       }
+
+      .card-anchor{
+        text-decoration: inherit;
+    color: inherit;
+      }
