@@ -299,7 +299,7 @@ const runningProjects = (container, lineItems, showfigure) => {
               >
                 <div class="d-inline-flex align-items-center col-5">
                   <img
-                    id="cs-thumbnail"
+                    name="cs-thumbnail"
                     class="img-thumbnail rounded-5 p-3"
                     src="${item.icon}"
                     alt="thumbnail"
@@ -348,3 +348,88 @@ function abbreviateNumber(numberString) {
 
   return number.toFixed(0);
 }
+
+function createNavigation(containerId, icons) {
+  const navigationHtml = `
+    <div class="navigation">
+      <ul>
+        ${icons
+          .map(
+            (icon) => `
+          <li>
+            <a href="#">
+              <span class="nav-icon"><ion-icon name="${icon}-outline"></ion-icon></span>
+            </a>
+          </li>
+        `
+          )
+          .join("")}
+        <div class="indicator"><span></span></div>
+      </ul>
+    </div>
+  `;
+
+  // Append the generated HTML to the target container
+  $(`#${containerId}`).html(navigationHtml);
+
+  const $listItems = $(`#${containerId} .navigation ul li`);
+  const $indicator = $(`#${containerId} .navigation .indicator`);
+
+  // Set the first item as active by default
+  $listItems.first().addClass("active");
+
+  // Event listener for active state toggle
+  $listItems.on("click", function () {
+    $listItems.removeClass("active");
+    $(this).addClass("active");
+    // indicatorRules();
+  });
+
+  // Dynamically generate indicator rules
+  let indicatorRules = () => {
+    let listItems = $(".navigation ul li"); // Dynamically get the number of list items
+    let listLength = listItems.length;
+    let res = "";
+    let liWidth = listItems.outerWidth(true);
+    for (let i = 0; i < listLength; i++) {
+      res += `.navigation ul li:nth-child(${
+        i + 1
+      }).active ~ .indicator { transform: translateX(calc(${liWidth}px * ${i})); }`;
+    }
+    let style = document.createElement("style");
+    style.innerHTML = res;
+    document.head.appendChild(style);
+  };
+
+  indicatorRules();
+}
+
+// function createNavigation(containerId, icons) {
+//   const navigationHtml = `
+//     <div class="navigation">
+//       <ul>
+//         ${icons
+//           .map(
+//             (icon) => `
+//           <li>
+//             <a href="#">
+//               <span class="nav-icon"><ion-icon name="${icon}-outline"></ion-icon></span>
+//             </a>
+//           </li>
+//         `
+//           )
+//           .join("")}
+//         <div class="indicator"><span></span></div>
+//       </ul>
+//     </div>
+//   `;
+
+//   // Append the generated HTML to the target container
+//   $(`#${containerId}`).html(navigationHtml);
+
+//   // Add click event listeners for active state
+//   $(`#${containerId} .navigation ul li`).on("click", function () {
+//     $(`#${containerId} .navigation ul li`).removeClass("active");
+//     $(this).addClass("active");
+//   });
+// }
