@@ -119,6 +119,7 @@ def create_promotion():
 def edit_promotion(id):
     logging.info(f'entered the edit promotion endpoint for id: {id}')
     promo, dpc, theme = get_promotion(id)
+    logging.info(f'see promo: {vars(promo)}')
     roles = [role.strip() for role in current_user.role.split(',')]
     user_can_access = promo.abbreviation in roles or 'admin' in roles
     if not user_can_access:

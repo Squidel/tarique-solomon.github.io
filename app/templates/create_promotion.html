@@ -19,9 +19,7 @@
 ></script>
 {% endblock %} {% block title %}{{ 'Create New Promotion' if not promotion else
 'Edit Promotion' }}{% endblock %} {% block content %}
-<div
-  class="d-flex justify-content-center align-items-center min-vh-100 bg-light"
->
+<div class="justify-content-center align-items-center min-vh-100 bg-light">
   <form id="create-form" class="p-4 border rounded shadow bg-white">
     <!-- ID -->
     <!-- <label for="id">ID:</label> -->
@@ -391,6 +389,7 @@
         });
       }
       editor.on("init", function () {
+        // console.log("editor id: ", editor.id);
         if (editor.id === "block1") {
           editor.setContent(
             `{{ dpc.block1 | safe if dpc and dpc.block1 else "" }}`
@@ -410,6 +409,10 @@
         } else if (editor.id === "rules") {
           let rules_content = `{{ dpc.rules | safe if dpc and dpc.rules else "" }}`;
           editor.setContent(convertAccordionToBlockquotes(rules_content));
+        } else if (editor.id === "description") {
+          editor.setContent(
+            `{{ promotion.description | safe if promotion and promotion.description else "" }}`
+          );
         }
         editor.undoManager.add();
       });

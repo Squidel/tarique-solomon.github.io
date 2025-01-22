@@ -540,7 +540,7 @@ body {
     text-overflow: var(--ellipsis);
 }
 
-.truncate-multiline > p {
+.truncate-multiline *{
     display: -webkit-box; /* Flex-like behavior for truncation */
     -webkit-line-clamp: 8; /* Number of lines to show */
     -webkit-box-orient: vertical; /* Set the box to vertical */
@@ -609,7 +609,10 @@ body {
 .card-parent {
     background-color: #fff;
     box-shadow: 3px 3px 20px 0px rgba(0, 0, 0, 0.1);
-    /* max-height: 450px; */
+    min-height: 100%;
+    max-height: 62vh;
+    height: 100%;
+    overflow-y: hidden;
 }
 
 #card-title {

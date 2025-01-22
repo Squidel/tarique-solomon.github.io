@@ -132,7 +132,7 @@ def get_promotion(id:int):
         logging.info(f'got dpc: {vars(dny[0]) if dny[0] is not None else None}')
         theme = dny[0].themes if dny and dny[0] else None
         # logging.info(f'got theme: {vars(theme[0])}')
-        promotions = Promotion(promo.id, promo.promotion_name, promo.start_date, promo.end_date, promo.main_picture, None, promo.abbreviation, promo.banner_image,promo.upload_folder, is_activation=promo.is_activation)
+        promotions = Promotion(promo.id, promo.promotion_name, promo.start_date, promo.end_date, promo.main_picture, None, promo.abbreviation, promo.banner_image,promo.upload_folder, is_activation=promo.is_activation, description=promo.description)
         content = DynamicContent( dny[0].id, promo.id, dny[0].how_to_enter_html, dny[0].prizes_html, dny[0].block1_html, dny[0].block2_html, dny[0].rules_html ) if dny is not None or dny[0] is not None else None
         theming = ThemesDto(theme[0].id, theme[0].name, theme[0].primary_color,theme[0].secondary_color, theme[0].background_color, theme[0].font_family,theme[0].font_size, theme[0].dpc_id) if theme is not None or theme[0] is not None else None#theme[0].to_dict()
     except Exception as e:
