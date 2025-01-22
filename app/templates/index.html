@@ -1,0 +1,271 @@
+{% extends "base.html" %} {% block content %}
+
+<!-- Main hero banner -->
+<section id="home" class="hero">
+  <div class="intro">
+    <div id="heading-content" class="headings">
+      <h3 class="greet-heading">Hello, I'm</h3>
+      <h1 class="my-heading">Tarique Solomon</h1>
+      <h4 id="type-text"></h4>
+    </div>
+    <div class="intro-buttons">
+      <a
+        href="mailto:tariquesolomonwrk@gmail.com?subject=Reaching Out"
+        class="btn common-btn"
+        >Email Me</a
+      >
+      <a href="#projects" class="btn ghost-btn">My projects</a>
+    </div>
+
+    <div class="social-links">
+      <div class="footer-menu">
+        <ul class="footer-menu-list">
+          <!-- <li class="footer-list-items">
+                  <a class="footer-links" href="#">
+                    <i class="fab fa-facebook-f"></i>
+                  </a>
+                </li> -->
+          <li class="footer-list-items">
+            <a
+              target="_blank"
+              class="footer-links"
+              href="mailto:tariquesolomonwrk@gmail.com?subject=Reaching Out"
+            >
+              <i class="fa fa-envelope"></i>
+            </a>
+          </li>
+          <li class="footer-list-items">
+            <a
+              target="_blank"
+              class="footer-links"
+              href="https://github.com/Squidel"
+            >
+              <i class="fab fa-github"></i>
+            </a>
+          </li>
+          <li class="footer-list-items">
+            <a
+              target="_blank"
+              class="footer-links"
+              href="https://www.linkedin.com/in/tarique-solomon-170489245"
+            >
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Section -->
+<section id="about" class="about">
+  <div class="about-text">
+    <h1 class="my-heading">About Me</h1>
+    <p class="lead-para">
+      A student of Dextor's Labratory, I'm a ... software engineer? software
+      developer? I'm someone who writes code to solve everyday tasks. I'm
+      passionate about this modern day magic, that allows me to create tools to
+      solve issues I (or you) may face in your day to day. A student of the
+      game, I'm always trying to learn new technologies (even tho I'm always
+      behind)
+    </p>
+  </div>
+  <div class="about-image">
+    <img src="../static/images/6463428.jpg" alt="About Image" />
+  </div>
+</section>
+
+<section class="w-100 alt-theme-colour" id="services">
+  <div class="full-row">
+    <div class="services-heading">
+      <h1 class="my-heading text-center">Skills</h1>
+    </div>
+    <div class="services-content">
+      <!-- <div id="test"></div> -->
+      <div class="container-fluid">
+        <div class="row row-cols-1" id="skills-container"></div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- Services Section -->
+<section class="services theme-colour" id="projects">
+  <div class="services-heading">
+    <h1 class="my-heading text-center">Projects</h1>
+  </div>
+  <div class="services-content">
+    <div class="container-fluid">
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3" id="t">
+        {% for card in blogPosts %}
+        <div class="col">
+          <div class="p-3">
+            <a class="card-anchor" href="{{ card.url }}" target="_blank">
+              <div
+                class="d-flex flex-column justify-content-between card-parent rounded py-5 px-3"
+              >
+                <div>
+                  <div class="d-inline-flex align-items-center ms-md-3 mb-4">
+                    <h3 class="card-title fw-bold mb-0">
+                      {{ card.promo_name }}
+                    </h3>
+                    <i
+                      style="color: #3d3d3d"
+                      class="fa-solid fa-circle-info ms-2"
+                    ></i>
+                  </div>
+                  <div class="d-flex flex-column">
+                    <div class="d-flex flex-column mb-3">
+                      <div class="ms-md-3 mb-md-4">
+                        {% if card.description %}
+                        <div class="description py-1 px-4 truncate-multiline">
+                          {{ card.description | safe }}
+                        </div>
+                        {% endif %}
+                      </div>
+                      <div class="ms-md-3 mb-md-4">
+                        {% if card.startDate %}
+                        <div class="variance-container rounded-5 py-1 px-4">
+                          <h6 class="d-inline">{{ card.startDate }}</h6>
+                        </div>
+                        {% endif %} {% if card.subtext %}
+                        <div class="subtext-container py-1 px-4">
+                          <p class="d-inline">{{ card.subtext }}</p>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-block">
+                  <img
+                    src="{{ url_for('static', filename='images/' + card.mainPicture) }}"
+                    class="rounded"
+                    alt="Image representing the blog post: {{ card.promo_name }}"
+                    onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/image-not-found.png') }}'"
+                  />
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer section -->
+<footer class="footer">
+  <div class="footer-content text-center">
+    <h4>Copyright © 2025 All rights reserved</h4>
+    <h7>based on template created by GeeksforGeeks.</h7>
+    <h6>icons created by Freepik - Flaticon</h6>
+  </div>
+</footer>
+
+{% endblock %} {% block scripts %}
+
+<script>
+  const loadCards = () => {
+    addCard(
+      "#projects-container",
+      `bootstrap table to accordion`,
+      `Borne from the need to ~quickly~ add responsiveness to a legacy MVC application, I created this javascript library to convert bootstrap tables to accordions.
+        It probably needs a little cleanup but it worked to solve the problem at hand.`,
+      null,
+      getCardImages("a"),
+      null,
+      "https://github.com/Squidel/table-accordion.git"
+    );
+    addCard(
+      "#projects-container",
+      `Beyond the Paper`,
+      `A simple Restful api with some html, that allowed the user to input some pdf file, and email them out to different employees. This too was borne of necessity, as I assisted a friend in finding 
+        a solution to help email payslips to various employees. The challenge he faced was that his current system generated a huge pdf file, with payslips for all employees, so I had to
+        split the pdf and send them off to the individual employees.
+        `,
+      null,
+      getCardImages("a"),
+      null,
+      "https://github.com/Squidel/EmailService"
+    );
+    addCard(
+      "#projects-container",
+      `WorkFlow Engine`,
+      `I'm noticing a trend, although this project isn't really in use. I created a workflow library (with some state machine functionality - lol couldn't decide what I wanted), in C#, that would 
+        allow a user to define the transitions of a record between states. It also allows the user to define triggers to run some actions (the state machine bit). All in all there's definitely some promise here`,
+      null,
+      getCardImages("a"),
+      null,
+      "https://github.com/Squidel/workflow_engine"
+    );
+
+    addCard(
+      "#projects-container",
+      `TRex Clone`,
+      `Finally, a project not inspired by work. Was just messing around with MonoGame framework, and created a clone of the Trex game you see in Chrome (you know, when the net fails)`,
+      null,
+      getCardImages("a"),
+      null,
+      "https://github.com/Squidel/Trex_Clone"
+    );
+
+    addCard(
+      "#projects-container",
+      `876Promotions`,
+      `A flutter project, back to work. I helped a friend refactor his flutter website, while adding some functionality for dynamically adding new content. There was a need
+        for the end user to be able to add new content (think blog posts but not really), without having to add new records to the database, new html files etc. A fun little exercise, and it definitely
+        increased my appreciation of Python`,
+      null,
+      getCardImages("a"),
+      null,
+      "https://876promotions.com/"
+    );
+  };
+  const loadSkills = () => {
+    // Example usage:
+
+    const allSkills = [
+      { name: "C#", percentage: 85, icon: "../static/images/c-sharp.png" },
+      {
+        name: ".Net Core",
+        percentage: 85,
+        icon: "../static/images/asp.png",
+      },
+      { name: "React", percentage: 60, icon: "../static/images/react.png" },
+      {
+        name: "TypeScript",
+        percentage: 40,
+        icon: "../static/images/typescript.png",
+      },
+      { name: "HTML", percentage: 79, icon: "../static/images/html.png" },
+      { name: "Python", percentage: 60, icon: "../static/images/python.png" },
+      { name: "SQL", percentage: 75, icon: "../static/images/sql.png" },
+      {
+        name: "Azure Devops",
+        percentage: 40,
+        icon: "../static/images/azure.png",
+      },
+    ];
+    runningProjects("#skills-container", allSkills);
+  };
+  $(document).ready(() => {
+    console.log("document ready");
+    jucktype("#type-text", " A Software Engineer with 7 years of Experience.");
+
+    loadCards();
+    loadSkills();
+    // function updateProgress(value) {
+    //   const progressBar = document.getElementById("progress-bar");
+    //   const progressValue = document.getElementById("progress-value");
+    //   value = Math.max(0, Math.min(100, value));
+    //   console.log("progressbar: ", progressBar);
+    //   progressBar.style.width = value + "%";
+    // }
+
+    // updateProgress(45); // Call this function with whatever your actual data value is
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html
+  lang="en"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <title></title>
+    <!--[if mso]>
+      <noscript>
+        <xml>
+          <o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+        </xml>
+      </noscript>
+    <![endif]-->
+    <style>
+      table,
+      td,
+      div,
+      h1,
+      p {
+        font-family: Arial, sans-serif;
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0">
+    <table
+      role="presentation"
+      style="
+        width: 100%;
+        border-collapse: collapse;
+        border: 0;
+        border-spacing: 0;
+        background: #ffffff;
+      "
+    >
+      <tr>
+        <td align="center" style="padding: 0">
+          <table
+            id="email_template_table"
+            role="presentation"
+            style="
+              width: 602px;
+              border-collapse: collapse;
+              border: 1px solid #cccccc;
+              border-spacing: 0;
+              text-align: left;
+            "
+          >
+            <tr>
+              <td
+                align="center"
+                style="padding: 40px 0 30px 0; background: #ffbc26"
+              >
+                <h1 style="color: #2e2e2e">THANK YOU!</h1>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 36px 30px 42px 30px">
+                <table
+                  role="presentation"
+                  style="
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 0;
+                    border-spacing: 0;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 0 0 10px 0; color: #153643">
+                      <h1
+                        style="
+                          font-size: 24px;
+                          margin: 0 0 20px 0;
+                          font-family: Arial, sans-serif;
+                        "
+                      >
+                        Your Submission Details
+                      </h1>
+                      <p>Reference Number: {{ message['reference_number'] }}</p>
+                      <p>Date of Submission: {{ message['date_created'] }}</p>
+                      <p>Submitted by: {{ message['name'] }}</p>
+                      <br />
+                      <hr />
+                      <br />
+                      <tr>
+                        <td colspan="2" style="text-align: center">
+                          <p
+                            style="
+                              margin-top: 5px;
+                              font-size: 16px;
+                              line-height: 24px;
+                              font-family: Arial, sans-serif;
+                            "
+                          >
+                            <a
+                              href="{{message['feedback']}}"
+                              style="
+                                color: #ee4c50;
+                                text-decoration: none;
+                                padding: 8px 16px;
+                                margin-right: 10px; /* Adds spacing between buttons */
+                                border-radius: 20px;
+                                background-color: #2e2e2e;
+                                display: inline-block;
+                              "
+                              >FEEDBACK FORM</a
+                            >
+                            <a
+                              href="{{message['submissions']}}"
+                              style="
+                                color: #ee4c50;
+                                text-decoration: none;
+                                padding: 8px 16px;
+                                border-radius: 20px;
+                                background-color: #2e2e2e;
+                                display: inline-block;
+                              "
+                              >Previous Submissions</a
+                            >
+                          </p>
+                        </td>
+                      </tr>
+
+                      <br />
+                      <hr />
+                      <br />
+                      <p
+                        style="
+                          margin: 0;
+                          font-size: 12px;
+                          line-height: 24px;
+                          font-family: Arial, sans-serif;
+                        "
+                      >
+                        Please note that any future entries with the same
+                        receipt will not be considered. You may enter as many
+                        times as you wish, but the submission will only be
+                        approved if the receipt is unique.
+                      </p>
+                      <p
+                        style="
+                          margin-top: 5px;
+                          font-size: 16px;
+                          line-height: 24px;
+                          font-family: Arial, sans-serif;
+                        "
+                      >
+                        <a
+                          href="{{message['guidelines']}}"
+                          style="color: #ee4c50; text-decoration: underline"
+                          >Refresh your memory with the promotion guidelines</a
+                        >
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 30px; background: #ee4c50">
+                <table
+                  role="presentation"
+                  style="
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 0;
+                    border-spacing: 0;
+                    font-size: 9px;
+                    font-family: Arial, sans-serif;
+                  "
+                >
+                  <tr>
+                    <td style="padding: 0; width: 50%" align="left">
+                      <p
+                        style="
+                          margin: 0;
+                          font-size: 14px;
+                          line-height: 16px;
+                          font-family: Arial, sans-serif;
+                          color: #ffffff;
+                        "
+                      >
+                        &reg; 876 Promotions<br /><a
+                          href="https://www.xclusivdigital.com"
+                          style="color: #ffffff; text-decoration: underline"
+                          >A sub-company of XCLUSIV Digital</a
+                        >
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

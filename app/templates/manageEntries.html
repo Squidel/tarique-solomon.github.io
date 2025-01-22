@@ -1,0 +1,323 @@
+{% extends "base.html" %} {% block links %} {{ super() }}
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+  integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"
+  integrity="sha512-PRJxIx+FR3gPzyBBl9cPt62DD7owFXVcfYv0CRNFAcLZeEYfht/PpPNTKHicPs+hQlULFhH2tTWdoxnd1UGu1g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+{% endblock %} {% block title %}Pure Scholars{% endblock %} {% block content %}
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <button
+      class="nav-link active"
+      id="home-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#promotion-container"
+      type="button"
+      role="tab"
+      aria-controls="home"
+      aria-selected="true"
+    >
+      All
+    </button>
+  </li>
+  <li class="nav-item">
+    <button
+      class="nav-link"
+      id="winner-tab"
+      data-bs-toggle="tab"
+      data-bs-target="#winner-content"
+      type="button"
+      role="tab"
+      aria-controls="home"
+      aria-selected="false"
+    >
+      Winner
+    </button>
+  </li>
+</ul>
+
+<div class="tab-content">
+  <div
+    id="promotion-container"
+    class="container-fluid py-5 tab-pane fade show active"
+    role="tabpanel"
+  >
+    <div class="p-3">
+      <h2 class="fw-bold">
+        Managing Entries for the {{ promotion_info.promo_name }} Campaign
+      </h2>
+      <h4>TOTAL COUNT: {{ entries|length }}</h4>
+    </div>
+    <button id="download-pdf">Download as PDF</button>
+
+    <div id="participants">
+      {% if entries is not none %}
+
+      <div class="row row-cols-3 p-5">
+        {% for entry in entries %}
+        <div class="p-3 entry-parent">
+          <div class="card">
+            <img
+              src="{{ url_for('main.serve_files', filename=promotion_info.uploadFolder ~ entry.image) }}"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ entry.full_name }}</h5>
+              <p class="card-text">Email Address: {{ entry.email }}</p>
+              <p class="card-text">Phone Number: {{ entry.mobile }}</p>
+              <a
+                href="{{ url_for('main.serve_files', filename=promotion_info.uploadFolder ~ entry.image) }}"
+                target="_blank"
+                class="btn btn-primary"
+                >View Receipt</a
+              >
+              <a
+                data-entry="{{entry.id}}"
+                href=""
+                class="btn btn-primary archive-link"
+                >Archive Entry</a
+              >
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% else %}
+      <div class="p-3">
+        <h1>No entries returned.</h1>
+      </div>
+      {% endif %}
+    </div>
+    <div id="invisible-table-div" style="display: none">
+      <table id="invisible-table">
+        <thead>
+          <tr>
+            <!-- <th>ID</th> -->
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in entries %}
+          <tr data-id="{{ record.id }}">
+            <!-- <td>{{ record.id }}</td> -->
+            <td>{{ record.full_name }}</td>
+            <td>{{ record.email }}</td>
+            <td>{{ record.mobile }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div id="winner-content" class="tab-pane fade">
+    {% if winner_data and winner_data['status']%}
+    <div id="invisible-table-div">
+      <table id="invisible-table-first" class="table table-striped table-bordered table-hover text-center">
+        <caption>
+          First Draw
+        </caption>
+        <thead>
+          <tr>
+            <!-- <th>ID</th> -->
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Reference Number</th>
+            <th>Badge</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in winner_data['data']['first_draw'] %}
+          <tr data-id="{{ item.reference_number }}">
+            <td>{{ item.full_name }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.mobile }}</td>
+            <td>{{ item.reference_number }}</td>
+            <td> <select class="badge-dropdown" data-id="{{ item.id }}">
+              <option value="default" {% if item.badge == 'default' %}selected{% endif %} selected>Default</option>
+              <option value="pending" {% if item.badge == 'pending' %}selected{% endif %}>Pending</option>
+              <option value="rejected" {% if item.badge == 'rejected' %}selected{% endif %}>Rejected</option>
+              <option value="active" {% if item.badge == 'active' %}selected{% endif %}>Active</option>
+          </select></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <table id="invisible-table-second" class="table table-striped table-bordered table-hover text-center">
+        <caption>
+          Second Draw
+        </caption>
+        <thead>
+          <tr>
+            <!-- <th>ID</th> -->
+            <th>Full Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Reference Number</th>
+            <th>Badge</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in winner_data['data']['second_draw'] %}
+          <tr data-id="{{ item.reference_number }}">
+            <td>{{ item.full_name }}</td>
+            <td>{{ item.email }}</td>
+            <td>{{ item.mobile }}</td>
+            <td>{{ item.reference_number }}</td>
+            <td> <select class="badge-dropdown" data-id="{{ item.id }}">
+              <option value="default" {% if item.badge == 'default' %}selected{% endif %} selected>Default</option>
+              <option value="pending" {% if item.badge == 'pending' %}selected{% endif %}>Pending</option>
+              <option value="rejected" {% if item.badge == 'rejected' %}selected{% endif %}>Rejected</option>
+              <option value="active" {% if item.badge == 'active' %}selected{% endif %}>Active</option>
+          </select></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {%endif%}
+  </div>
+</div>
+<script>
+  $(document).ready(() => {
+    console.log("manage page loaded");
+    $(".archive-link").click((e) => {
+      e.preventDefault();
+      if(confirm('Are you sure you want to proceed?')){
+
+      
+      console.log(`attempting to archive element: `);
+      let id = $(e.currentTarget).data("entry");
+      let data = { entryId: $(e.currentTarget).data("entry") };
+      console.log("got data attribute: ", data);
+
+      $.ajax({
+        url: `${window.location.origin}/api/promotion/archive`, // Replace with your actual endpoint
+        crossDomain: true,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (response) {
+          console.log("Server Response:", response);
+          alert("Entry archived!");
+          let parent = $(e.currentTarget).closest(".entry-parent");
+          console.log("parent: ", parent);
+          parent.remove();
+          $(`#invisible-table tr[data-id='${id}']`).remove();
+        },
+        error: function (xhr, status, error) {
+          console.error("Error:", error);
+          alert("Failed to generate promotion winners");
+        },
+      });
+    }else{
+      alert('Not archived');
+    }
+    });
+
+    $('.badge-dropdown').change(function(e){
+      const dropdown = $(this);
+      const itemId = dropdown.data('id'); // Get item ID from data attribute
+      const selectedBadge = dropdown.val(); 
+
+      const confirmAction = confirm(`Are you sure you want to update the badge to "${selectedBadge}"?`);
+      if(!confirmAction){
+        return;
+      }
+      $.ajax({
+        url: `${window.location.origin}/api/promotion/set-badge`, // Adjust this URL to match your Flask route
+        crossDomain: true,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({
+          winner_id: itemId,
+          badge_name: selectedBadge
+        }),
+        success: function (response) {
+            alert("Badge updated successfully!");
+        },
+        error: function (xhr, status, error) {
+            alert("Failed to update badge. Please try again.");
+            // Reset the dropdown to the previous value on failure
+            // dropdown.val(dropdown.find("option[selected]").val());
+            console.error('An error occurred: ', xhr);
+            console.error('An error occurred: ', status);
+            console.error('An error occurred: ', error);
+        }
+    });
+    })
+
+    // Export table to PDF
+    $("#download-pdf").click(function () {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // Add headers to the PDF
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.text("Report Title: {{ promotion_info.promo_name }}", 105, 10, {
+        align: "center",
+      }); // Centered title
+      doc.setFontSize(12);
+      doc.text("Generated on: " + new Date().toLocaleDateString(), 105, 20, {
+        align: "center",
+      });
+
+      // Add some space before the table
+      doc.setFont("helvetica", "normal");
+      doc.text("The following table contains all participant details:", 10, 30);
+
+      // Import the jspdf-autotable plugin
+      doc.autoTable({
+        html: "#invisible-table", // Use the table's HTML directly
+        startY: 40, // Position on the page
+        theme: "grid", // Table theme (e.g., grid, plain, etc.)
+        styles: {
+          fontSize: 10, // Adjust font size
+        },
+      });
+      // let y = 10; // Starting Y coordinate
+      // doc.text("Exported Data", 10, y);
+      // y += 10;
+
+      // // Add table rows to PDF
+      // $("#invisible-table tbody tr").each(function () {
+      //   const row = $(this);
+      //   const id = row.find("td:nth-child(1)").text();
+      //   const fullName = row.find("td:nth-child(2)").text();
+      //   const email = row.find("td:nth-child(3)").text();
+      //   const mobile = row.find("td:nth-child(4)").text();
+
+      //   doc.text(
+      //     `ID: ${id}, Name: ${fullName}, Email: ${email}, Mobile: ${mobile}`,
+      //     10,
+      //     y
+      //   );
+      //   y += 10;
+      // });
+
+      // Save the PDF
+      doc.save("{{ promotion_info.promo_name }}_all_participants.pdf");
+    });
+  });
+</script>
+{% endblock %}

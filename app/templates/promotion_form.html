@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block title %}Pure Scholars{% endblock %}  
+
+{% block content %}
+
+<div id="promotion-container" class="container-fluid py-5 ">
+
+    <div class="background-image"></div>    
+
+    <div class="s1 container">
+
+        <form id="form" class="col-11 col-lg-12 mx-auto" method="POST" action="/promotions/pure-scholars" enctype="multipart/form-data">
+            {% if acceptingEntries is sameas True %}
+           
+            <div class="pt-3 text-center"><h2>Pure Scholars Promotion Form Submission</h2></div>
+            <hr class="col-8 mx-auto mb-5">
+    
+            <div class="row">
+                <div class="form-floating mb-3 col-12 col-lg-6">
+                    <select class="form-select" name="title" id="title" aria-label="Title">
+                        {% if form_data.title %}
+                            <option selected value="{{ form_data.title }}">{{ form_data.title }}</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
+                        {% else %}
+                            <option selected>Select a Title</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
+                        {% endif %}
+                    </select>
+                    <label class="ps-4" for="title">Title</label>
+                </div>
+            </div>
+    
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2">
+        
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control {% set has_fname_error = false %}{% for error in errors %}{% if error.field == 'fname' %}{% set has_fname_error = true %}{% endif %}{% endfor %}{% if has_fname_error %}error-field{% endif %}" name="fname" id="fname" placeholder="John" {% if form_data.fname %} value="{{ form_data.fname }}" {% endif %}>
+                    <label class="ps-4" for="fname">First Name</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control {% set has_lname_error = false %}{% for error in errors %}{% if error.field == 'lname' %}{% set has_lname_error = true %}{% endif %}{% endfor %}{% if has_lname_error %}error-field{% endif %}" name="lname" id="lname" placeholder="Brown" {% if form_data.lname %} value="{{ form_data.lname }}" {% endif %}>
+                    <label class="ps-4" for="lname">Last Name</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control {% set has_email_error = false %}{% for error in errors %}{% if error.field == 'email' %}{% set has_email_error = true %}{% endif %}{% endfor %}{% if has_email_error %}error-field{% endif %}" name="email" id="email" placeholder="name@example.com" {% if form_data.email %} value="{{ form_data.email }}" {% endif %}>
+                    <label class="ps-4" for="email">Email Address</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control {% set has_phone_error = false %}{% for error in errors %}{% if error.field == 'phone' %}{% set has_phone_error = true %}{% endif %}{% endfor %}{% if has_phone_error %}error-field{% endif %}" name="phone" id="phone" placeholder="Contact Number" {% if form_data.phone %} value="{{ form_data.phone }}" {% endif %}>
+                    <label class="ps-4" for="phone">Contact Number</label>
+                </div>              
+
+            </div> 
+       
+            <div class="mb-3">
+                <label for="purchasePhoto" class="form-label">Upload Receipt</label>
+                <input class="form-control {% set has_upload_error = false %}{% for error in errors %}{% if error.field == 'upload' %}{% set has_upload_error = true %}{% endif %}{% endfor %}{% if has_upload_error %}error-field{% endif %}" name="purchasePhoto" type="file" id="purchasePhoto">
+                <p class="small card-text">File Upload Size Limit: 5 MB</p>
+                <p class="small card-text">Please ensure you upload a full picture of the receipt including the invoice number, date and products purchased.</p>
+                <p class="small card-text">You may enter as many times as you wish, but the submission will only be approved if the invoice number is different and the date is within the promotion period.</p>
+            </div>
+
+            <input name="promotion_abbreviation" type="hidden" value="PSP"/>
+    
+            <button name="entryBtn" type="submit" class="btn btn-primary custom-button">Submit</button>
+
+            {% else %}
+
+            <div class="large-error p-3">
+                <p class="m-0">{{ message }}</p>
+            </div>
+
+            <div id="form-title" class="pt-3 text-center"><h2>Pure Scholars Promotion Form Submission</h2></div>
+            <hr class="col-8 mx-auto mb-5">
+    
+            <div class="row">
+                <div class="form-floating mb-3 col-12 col-lg-6">
+                    <select class="form-select" name="title" id="title" aria-label="Title" disabled>
+                        {% if form_data.title %}
+                            <option selected value="{{ form_data.title }}">{{ form_data.title }}</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
+                        {% else %}
+                            <option selected>Select a Title</option>
+                            <option value="Mr">Mr</option>
+                            <option value="Mrs">Mrs</option>
+                            <option value="Ms">Ms</option>
+                        {% endif %}
+                    </select>
+                    <label class="ps-4" for="title">Title</label>
+                </div>
+            </div>
+    
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2">
+        
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control {% set has_fname_error = false %}{% for error in errors %}{% if error.field == 'fname' %}{% set has_fname_error = true %}{% endif %}{% endfor %}{% if has_fname_error %}error-field{% endif %}" name="fname" id="fname" placeholder="John" {% if form_data.fname %} value="{{ form_data.fname }}" {% endif %} disabled>
+                    <label class="ps-4" for="fname">First Name</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control {% set has_lname_error = false %}{% for error in errors %}{% if error.field == 'lname' %}{% set has_lname_error = true %}{% endif %}{% endfor %}{% if has_lname_error %}error-field{% endif %}" name="lname" id="lname" placeholder="Brown" {% if form_data.lname %} value="{{ form_data.lname }}" {% endif %} disabled>
+                    <label class="ps-4" for="lname">Last Name</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control {% set has_email_error = false %}{% for error in errors %}{% if error.field == 'email' %}{% set has_email_error = true %}{% endif %}{% endfor %}{% if has_email_error %}error-field{% endif %}" name="email" id="email" placeholder="name@example.com" {% if form_data.email %} value="{{ form_data.email }}" {% endif %} disabled>
+                    <label class="ps-4" for="email">Email Address</label>
+                </div>
+                
+                <div class="form-floating mb-3">
+                    <input type="number" class="form-control {% set has_phone_error = false %}{% for error in errors %}{% if error.field == 'phone' %}{% set has_phone_error = true %}{% endif %}{% endfor %}{% if has_phone_error %}error-field{% endif %}" name="phone" id="phone" placeholder="Contact Number" {% if form_data.phone %} value="{{ form_data.phone }}" {% endif %} disabled>
+                    <label class="ps-4" for="phone">Contact Number</label>
+                </div>              
+
+            </div> 
+       
+            <div class="mb-3">
+                <label for="purchasePhoto" class="form-label">Upload Receipt</label>
+                <input class="form-control {% set has_upload_error = false %}{% for error in errors %}{% if error.field == 'upload' %}{% set has_upload_error = true %}{% endif %}{% endfor %}{% if has_upload_error %}error-field{% endif %}" name="purchasePhoto" type="file" id="purchasePhoto" disabled>
+                <p class="small card-text">File Upload Size Limit: 5 MB</p>
+                <p class="small card-text">Please ensure you upload a full picture of the receipt including the invoice number, date and products purchased.</p>
+                <p class="small card-text">You may enter as many times as you wish, but the submission will only be approved if the invoice number is different and the date is within the promotion period.</p>
+            </div>
+
+            <input name="promotion_abbreviation" type="hidden" value="PSP"/>
+    
+            <button name="entryBtn" type="submit" class="btn btn-primary custom-button">Submit</button>
+            {% endif %}
+            
+            {% with form_errors = get_flashed_messages(category_filter=['form_error']) %}
+            {% if form_errors %}
+                <div class="col-10">
+                {% for error in form_errors %}
+                    <div class="alert alert-danger alert-dismissible fade show my-2 " role="alert">
+                        {{ error }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+          </form>
+    
+        <div id="promotion-info" class="col-lg-12">
+            <h2>HOW TO ENTER</h2>
+            <br />
+            <h4>Promotion Duration: June 12, 2023 - August 07, 2023</h4>
+            <h4>Grand Prize Draw Date: August 11, 2023</h4>
+            <h4>Weekly Prize Selection Date: Each Friday in the Promotion Duration</h4>
+            <br />
+            <ol>
+                <li style="margin-left: 20px;">Buy any 2 Pure Products at stores island-wide for a chance to win</li>
+                <li style="margin-left: 20px;">Take a picture of your receipt (which must show the qualifying products and the name of the store that the purchase was made, date and time of the purchase).</li>
+                <li style="margin-left: 20px;">Upload the picture of your receipt and complete the entry form at <a href="https://www.876promoters.com/pure-scholars">https://www.876promoters.com/pure-scholars</a> by scanning the QR Code located on the wobbler or poster.</li>
+            </ol>
+            <br /><br />
+            <h3 style="margin-left: 20px;">OR</h3>
+            <br /><br />
+            <ol>
+                <li style="margin-left: 20px;">Submit your full name, phone number, and e-mail address along with a photo of your receipt. The receipt must show the qualifying products purchased,
+                    the name of the store that the purchase was made, date and time of the purchase via WhatsApp to <a href="tel:(876) 293 - 2639">(876) 293 - 2639.</a>
+                </li><br />
+            </ol>
+            <h5 style="font-style: italic;">Four Grand Prize winners will be selected and contacted via telephone after which an official letter will be emailed along with an announcement on social media.</h5>
+            <a href="#form" class="btn btn-primary custom-button">Enter Now !</a>
+        </div>
+    </div>
+
+    <div class="s2">
+        <div class="container py-3">
+
+            <div class="s2-sub">
+
+                <div>
+                    <h2>FOUR GRAND PRIZE WINNERS</h2>
+                    <img src="{{ url_for('static', filename='images/grand-prize.svg') }}" class="col-6 img-fluid" alt="Money Illustration">
+                    <h1 class="col-12">$150,000</h1>
+                </div>
+
+                <div>
+                    <h2>FOLLOW FOR WEEKLY PRIZES!</h2>
+                    <img src="{{ url_for('static', filename='images/instagram-icon-ns.svg') }}" class="col-6 img-fluid" alt="Instagram Illustration">
+                    <div class="row justify-content-center pt-3">
+                        <p class="col-12 col-lg-4"><strong>@purefoodsja</strong></p>
+                        <p class="col-12 col-lg-4"><strong>@worldbrandsja</strong></p>
+                    </div>
+                </div>
+
+            </div>
+                
+        </div>
+    </div>
+
+    <div class="s3 container py-5">
+
+        <div class="s3-sub">
+
+            <div class="accordion accordion-flush" id="accordionFooter">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Rules
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFooter">
+                        <div class="accordion-body">
+                            <p class="card-text">Contestants for the Grand Prizes must have an active Jamaican Bank account to be eligible for participation.</p>
+                            <p class="card-text">Winners are required to participate in advertising and public relations campaigns, which may include electronic, print, or other media. By accepting the prize, winners automatically agree to have their likeness appear in any PR communication, without additional compensation. Each winner will be provided with a document to sign, confirming their agreement to participate in public relations activities and the use of their likeness. If a participant does not agree with these rules, they are automatically disqualified from winning the prize.</p>
+                            <p class="card-text">Employees of the Grace Kennedy Group, World Brands Services and XCLUSIV Digital are not eligible to enter the promotion and neither are their immediate family members, specifically spouses, parents and children.</p>
+                            <p class="card-text">Prizes cannot be transferred, and non-cash prizes cannot be exchanged for cash. The winner must provide a valid identification document such as a driver's license, passport, or national ID. If the prizes are not claimed within the stated period, they will be forfeited, and the backup winners will be selected as the new winners. Once the prize is presented to the winner, our clients relinquish ownership of it. If a prize is not claimed within the claiming period, our clients have the right to retain the prize.</p> 
+                            <p class="card-text">Please note that Hi-Lo Gift Vouchers will expire one year from the date that the prize has been awarded.</p> 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Method of Notifying Winners
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFooter">
+                        <div class="accordion-body">
+                            <p class="card-text">Contact will be made by XCLUSIV Digital on behalf of our client, World Brands Services.</p>
+                            <ul>
+                                <li>Grand Prizes
+                                    <ul>
+                                        <li class="card-text">The winners will be announced on the relevant Instagram pages. They will receive a formal notice via email and they will also receive a phone call congratulating them on their success. No more than 10 calls will be made over a 5-day period to contact the winner after which this will be declared an unsuccessful attempt. In the event that no successful contact attempt is made, a backup winner will be declared as the winner for that specific draw and an attempt will be made to contact the winner.</li>
+                                    </ul>
+                                </li>
+                                <li>Weekly Prizes
+                                    <ul>
+                                        <li class="card-text">The winner will be announced via story post on the relevant Instagram pages on the Friday of each week during the promotion duration. The winner will be contacted via Instagram message and an agreement will be made for the collection of the prize that is most convenient to the winner including. Attempts will be made to contact the winner up to the 7th day after announcing the winner on Instagram; if there is no successful contact attempt, the prize will be passed on to a backup winner.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                            Claiming Periods and Requirements
+                        </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFooter">
+                        <div class="accordion-body">
+                            <p class="card-text">The winner will be required to provide a valid identification document (Driver’s license, passport, national ID). If the winner is unable to collect their prize, we will accept a signed letter of authorization allowing someone to collect the prize on their behalf. This letter of authorization must include a scan of the winner's ID. If prize are not redeemed during the stated period, the same will be forfeited and the backup winners will be promoted to the winner accordingly. Our clients relinquish ownership of the prize once it is presented to the winner. If a prize isn’t claimed during the claiming period, our clients have the right to retain such prizes.</p>
+                            <p class="card-text">Contact will be made by XCLUSIV Digital on behalf of our client, World Brands Services.</p>
+
+                            <ul>
+                                <li>Grand Prizes
+                                    <ul>
+                                        <li class="card-text">In the event where the winner is unable to attend the handing-over ceremony, these winners will have a period of 30 days, with the first day being the day of the handing-over ceremony, to collect their prize.
+                                            If the winner is unable to collect the prize during these 30 days, the prize will be passed on to a backup winner.</li>
+                                    </ul>
+                                </li>
+                                <li>Weekly Prizes
+                                    <ul>
+                                        <li class="card-text">Weekly Prizes must be claimed within a five (5) business day period, following a successful contact attempt.
+                                            <ul>
+                                                <li>Having a bearer deliver the prize to the address provided by the winner.</li>
+                                                <li>Allowing the winner to collect their prize at the World Brands or Pure Jamaica Headquarters.</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+              </div>
+        </div>
+
+        <div>
+            <h6 style="color:#fff" class="text-center mt-3">Authorized under section 58(3) of the Betting Gaming & Lotteries Act</h6>
+        </div>
+
+        <div class="row justify-content-center mt-5">
+            <a href="#form" class="col-2">
+                <img src="{{ url_for('static', filename='/images/curve-arrow.svg') }}" class="img-fluid" alt="Money Illustration">
+                Back to top
+            </a>
+        </div>
+              
+</div>
+
+
+{% endblock %}

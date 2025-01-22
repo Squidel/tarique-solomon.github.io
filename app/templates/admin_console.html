@@ -1,0 +1,404 @@
+{% extends "base.html" %} {% block links %} {{ super() }}
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+  integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.4/jspdf.plugin.autotable.min.js"
+  integrity="sha512-PRJxIx+FR3gPzyBBl9cPt62DD7owFXVcfYv0CRNFAcLZeEYfht/PpPNTKHicPs+hQlULFhH2tTWdoxnd1UGu1g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"
+  integrity="sha512-z8IYLHO8bTgFqj+yrPyIJnzBDf7DDhWwiEsk4sY+Oe6J2M+WQequeGS7qioI5vT6rXgVRb4K1UVQC5ER7MKzKQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+{% endblock %} {% block title %}Admin Console{% endblock %} {% block content %}
+<div class="container">
+  <!-- Page Title -->
+  <div class="row">
+    <div class="col-12 text-center">
+      <h1 class="display-4">Admin Management Console</h1>
+      <p class="lead">
+        Hello, {{ g.user.username }}, Here's where you can manage records for
+        the system.
+      </p>
+    </div>
+  </div>
+
+  <!-- Admin Actions -->
+  <div class="row">
+    <!-- Action Links Card -->
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-header">Admin Actions</div>
+        <div class="card-body">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <a class="btn"
+                href="#view-records"
+                data-bs-toggle="collapse"
+                aria-expanded="false"
+                aria-controls="view-records"
+              >
+                <button class="btn w-100">Actions</button>
+              </a>
+              <div class="collapse" id="view-records">
+                <ul class="list-group mt-2">
+                  <li class="list-group-item">
+                    <a href="{{ url_for('admin.create_promotion') }}"
+                      >Create A Promotion</a
+                    >
+                  </li>
+                  <li class="list-group-item">
+                    <a href="{{ url_for('admin.register') }}">Register User</a>
+                  </li>
+                  <li class="list-group-item">
+                    <a href="{{ url_for('main.logout') }}">Log Out</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <!-- <li class="list-group-item">
+              <button
+                class="btn btn-outline-warning w-100"
+                data-bs-toggle="modal"
+                data-bs-target="#editRecordModal"
+              >
+                Edit Promotion
+              </button>
+            </li>
+            <li class="list-group-item">
+              <button
+                class="btn btn-outline-danger w-100"
+                data-bs-toggle="modal"
+                data-bs-target="#manageEntryModal"
+              >
+                Manage Entries
+              </button>
+            </li> -->
+            <!-- <li class="list-group-item">
+              <button
+                class="btn btn-outline-success w-100"
+                data-bs-toggle="modal"
+                data-bs-target="#addRecordModal"
+              >
+                Add New Record
+              </button>
+            </li> -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Record List -->
+    <div id="available-records" class="col-md-8">
+      <div class="card">
+        <div class="card-header">Available Records</div>
+        <div class="card-body">
+          <h5>Select a record to manage</h5>
+          <ul class="list-group mt-2">
+            {% for record in records %}
+            <li
+              class="list-group-item d-flex justify-content-between align-items-center"
+            >
+              <span>{{ record.abbrv }}</span>
+              <div>
+                <a
+                  href="{{ url_for('admin.edit_promotion', id=record.id) }}"
+                  class="btn btn-warning btn-sm me-2"
+                >
+                  Edit Promotion
+                </a>
+
+                <a
+                  href="{{ url_for('admin.manage_entries', id=record.id) }}"
+                  class="btn btn-danger btn-sm"
+                >
+                  Manage Promotion Entries
+                </a>
+                <button
+                  data-id="{{record.id}}"
+                  data-promo="{{record.abbrv}}"
+                  {% if not record.winner_data['status'] %}
+                  disabled
+                {% endif %}
+                  class="download-winners-btn btn btn-sm custom-button"
+                >
+                  Download Winners
+                </button>
+              </div>
+              {% if record.winner_data['status']%}
+              <div id="invisible-table-div" style="display: none">
+                <table id="invisible-table-first-{{record.id}}">
+                  <caption>
+                    First Draw
+                  </caption>
+                  <thead>
+                    <tr>
+                      <!-- <th>ID</th> -->
+                      <th>Full Name</th>
+                      <th>Email</th>
+                      <th>Mobile</th>
+                      <th>Reference Number</th>
+                      <th>Badge</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in record.winner_data['data']['first_draw'] %}
+                    <tr data-id="{{ item.reference_number }}">
+                      <!-- <td>{{ record.id }}</td> -->
+                      <td>{{ item.full_name }}</td>
+                      <td>{{ item.email }}</td>
+                      <td>{{ item.mobile }}</td>
+                      <td>{{ item.reference_number }}</td>
+                      <td>
+                        <span class="pill {{item.badge}}">
+                          <span class="pill-text">{{item.badge}}</span>
+                        </span>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+                <table id="invisible-table-second-{{record.id}}">
+                  <caption>
+                    Second Draw
+                  </caption>
+                  <thead>
+                    <tr>
+                      <!-- <th>ID</th> -->
+                      <th>Full Name</th>
+                      <th>Email</th>
+                      <th>Mobile</th>
+                      <th>Reference Number</th>
+                      <th>Badge</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in record.winner_data['data']['second_draw'] %}
+                    <tr data-id="{{ item.reference_number }}">
+                      <!-- <td>{{ record.id }}</td> -->
+                      <td>{{ item.full_name }}</td>
+                      <td>{{ item.email }}</td>
+                      <td>{{ item.mobile }}</td>
+                      <td>{{ item.reference_number }}</td>
+                      <td>
+                        <span class="pill {{item.badge}}">
+                          <span class="pill-text">{{item.badge}}</span>
+                        </span>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              {%endif%}
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modals for Editing, Deleting, and Adding Records -->
+  <!-- Edit Record Modal -->
+  <div
+    class="modal fade"
+    id="editRecordModal"
+    tabindex="-1"
+    aria-labelledby="editRecordModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editRecordModalLabel">Edit Promotion</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>Select a record first to edit it.</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+            Edit Promotion
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Record Modal -->
+  <div
+    class="modal fade"
+    id="manageEntryModal"
+    tabindex="-1"
+    aria-labelledby="manageEntryModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="manageEntryModalLabel">Manage Entries</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>Select a record first to delete it.</p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+            Manage Entries
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS & Popper -->
+<script
+  src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+  integrity="sha384-oBqDVmMz4fnFO9gybpy5kW58Y76d5JbBC5aD7E5U04m+4X5SZKc4T1C"
+  crossorigin="anonymous"
+></script>
+<script>
+  $(document).ready(() => {
+    $(".download-winners-btn").click((e) => {
+      console.log("test button clicked");
+      let id = $(e.currentTarget).data("id");
+      let promo = $(e.currentTarget).data("promo");
+      downloadWinnerData(id, promo);
+    });
+    const downloadWinnerData = (id, promo) => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const doc2 = new jsPDF();
+
+      // const mergedDoc = new jsPDF();
+
+      // Add headers to the PDF
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(16);
+      doc.text(`Report Title: ${promo}`, 105, 10, {
+        align: "center",
+      }); // Centered title
+      doc.setFontSize(12);
+      doc.text("Generated on: " + new Date().toLocaleDateString(), 105, 20, {
+        align: "center",
+      });
+
+      // Add some space before the table
+      doc.setFont("helvetica", "normal");
+      doc.text("The following table contains all first draft winners:", 10, 30);
+
+      doc2.setFontSize(12);
+      doc2.setFont("helvetica", "normal");
+      doc2.text(
+        "The following table contains all second draft winners:",
+        10,
+        30
+      );
+
+      // Import the jspdf-autotable plugin
+      doc.autoTable({
+        html: `#invisible-table-first-${id}`, // Use the table's HTML directly
+        startY: 40, // Position on the page
+        theme: "grid", // Table theme (e.g., grid, plain, etc.)
+        styles: {
+          fontSize: 10, // Adjust font size
+        },
+      });
+
+      doc2.autoTable({
+        html: `#invisible-table-second-${id}`, // Use the table's HTML directly
+        startY: 40, // Position on the page
+        theme: "grid", // Table theme (e.g., grid, plain, etc.)
+        styles: {
+          fontSize: 10, // Adjust font size
+        },
+      });
+
+      const docBuffer = doc.output("arraybuffer");
+      const doc2Buffer = doc2.output("arraybuffer");
+      const arrayBuffer = [];
+      arrayBuffer.push(docBuffer);
+      arrayBuffer.push(doc2Buffer);
+
+      // console.log("doc2: ", doc2, doc);
+      // doc.addPage();
+      // doc.addPage(doc2Image);
+
+      // // Save the PDF
+      // doc.save("winner_data.pdf");
+      // doc2.save("winner_2.pdf");
+
+      mergePdfs(arrayBuffer)
+        .then((mergedFile) => {
+          console.log("merged file: ", mergedFile);
+          const blob = new Blob([mergedFile], { type: "application/pdf" });
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "merged_pdf.pdf";
+          link.click();
+
+          // Clean up the URL object
+          window.URL.revokeObjectURL(url);
+        })
+        .catch((error) => {
+          console.error("error when merging the files: ", error);
+        });
+    };
+
+    const mergePdfs = async (pdfsToMerges) => {
+      const { PDFDocument, PDFPage } = window.PDFLib;
+      const mergedPdf = await PDFDocument.create();
+      const actions = pdfsToMerges.map(async (pdfBuffer) => {
+        const pdf = await PDFDocument.load(pdfBuffer);
+        const copiedPages = await mergedPdf.copyPages(
+          pdf,
+          pdf.getPageIndices()
+        );
+        copiedPages.forEach((page) => {
+          // console.log('page', page.getWidth(), page.getHeight());
+          // page.setWidth(210);
+          mergedPdf.addPage(page);
+        });
+      });
+      await Promise.all(actions);
+      const mergedPdfFile = await mergedPdf.save();
+      return mergedPdfFile;
+    };
+  });
+</script>
+{% endblock %}

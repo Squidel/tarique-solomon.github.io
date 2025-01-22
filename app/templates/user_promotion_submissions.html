@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block links %} {{ super() }}
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+{% endblock %} {% block title %}User Submissions{% endblock %} {% block content
+%}
+<div class="container mt-5">
+  <h1>Promotion Submissions</h1>
+  <div class="row">
+    {% for promotion in user_submissions %}
+    <div class="col-12 mb-4">
+      <div class="card">
+        <div class="card-header">
+          <h4>{{ promotion.promotion }}</h4>
+        </div>
+        <div class="card-body">
+          <h5>
+            <strong>{{ promotion.full_name }}</strong><br />
+            Submissions:
+          </h5>
+          <ul class="list-group">
+            {% for submission in promotion.submissions %}
+            <li class="list-group-item">
+              <!-- <em>Submission Image:</em> -->
+              <div class="row">
+                <div class="col-md-4">
+                  <em>Date: {{submission.date_created}}</em>
+                </div>
+                <div class="col-md-6">
+                  <img
+                    src="{{ url_for('main.serve_files', filename=submission.submission_details) }}"
+                    alt="Submission Image"
+                    class="img-fluid"
+                    style="max-width: 150px; height: auto"
+                  />
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p>No promotions found.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

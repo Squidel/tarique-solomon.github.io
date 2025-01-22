@@ -1,0 +1,27 @@
+<div class="col-12">
+  <div class="col-10 col-lg-8 mx-auto text-center">
+    <h2>
+      The following information has also been sent to the email address you
+      provided.
+    </h2>
+  </div>
+
+  <div class="col-8 mt-4 text-center mx-auto">
+    <h5>
+      You will be redirected to the Promotions Listing in
+      <span id="countdown"></span>
+    </h5>
+    <button id="stopRedirect" class="btn btn-danger" onclick="stopRedirect()">
+      Stop Redirect
+    </button>
+    <button
+      id="startRedirect"
+      class="btn btn-success d-none"
+      onclick="startRedirect()"
+    >
+      Start Redirect Again
+    </button>
+  </div>
+
+  <div class="col-12 mt-4">{% include 'email_template.html' %}</div>
+</div>

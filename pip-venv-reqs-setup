@@ -1,0 +1,25 @@
+#Create and activate Virtual Environment
+py -m pip install --user virtualenv
+py -m venv venv
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process (Temporary) OR
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope User (Permanent)
+.\venv\Scripts\activate
+deactivate (when done)
+
+#Upgrade pip
+py -m pip install --upgrade pip
+
+#Update requirements file
+pip install pur 
+pur -r requirements.txt #Give pur your requirements.txt file and it updates all your packages to the latest versions.
+
+#Install Package for use of Environment Vairables
+pip install python-dotenv
+
+#Install requirements
+pip install -r requirements.txt
+pip freeze (to display a list of package specifiers)
+
+
+
+
