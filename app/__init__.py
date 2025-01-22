@@ -30,9 +30,12 @@ def create_app():
     print("Database URL:", app.config['SQLALCHEMY_DATABASE_URI'])
     
     db.init_app(app)
-    # with app.app_context():
-    #     # Create tables if they don't exist
-    #     db.create_all()
+    with app.app_context():
+        # Create tables if they don't exist
+        try:
+            db.create_all()
+        except Exception as e:
+            logging.error(f"attempted to create the tables if they didn't exist; {e}")
     
     from app.routes.routes import promotions_bp, admin_bp, index_bp
     from app.api.api import api_bp

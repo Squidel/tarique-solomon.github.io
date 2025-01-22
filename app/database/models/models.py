@@ -109,6 +109,7 @@ class BlogPosts(db.Model, BaseModel):
     main_picture = mapped_column(TEXT(255))
     is_activation = mapped_column(Boolean, nullable=False, default=False)
     feedback_url = mapped_column(TEXT(255), nullable=True, default=None)
+    description = mapped_column(TEXT, nullable=True, default=None)
 
     dynamic_page_content: Mapped[List['DynamicPageContent']] = relationship('DynamicPageContent', uselist=True, back_populates='promotion')
     form_submissions: Mapped[List['FormSubmissions']] = relationship('FormSubmissions', uselist=True, back_populates='promotion')

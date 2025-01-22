@@ -86,7 +86,7 @@ class BaseDTO:
             logging.error(f'An error occurred when attempting to validate object; {e}')
         return is_valid
 class Promotion(BaseDTO):
-    def __init__(self, id=None, name=None, startDate=None, endDate=None, mainPicture=None, url=None, abbreviation = None, banner = None, uploadFolder = '', is_activation = False) -> None:
+    def __init__(self, id=None, name=None, startDate=None, endDate=None, mainPicture=None, url=None, abbreviation = None, banner = None, uploadFolder = '', is_activation = False, description='') -> None:
         self.promo_id = id
         self.promo_name = name
         self.startDate = startDate
@@ -97,6 +97,7 @@ class Promotion(BaseDTO):
         self.banner = banner
         self.uploadFolder = uploadFolder
         self.is_activation = is_activation
+        self.description = description
 class DynamicContent(BaseDTO):
     def __init__(self, id=None, promotion_id=None, how_to_enter=None, prizes=None, block1=None, block2=None, rules=None):
         self.dnc_id = id

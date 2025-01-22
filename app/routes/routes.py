@@ -32,7 +32,11 @@ def serve_files(filename):
 @index_bp.route('/')
 def index():
     logging.info('entered route')
-    return render_template('index.html')
+    url_template = Template("/blog/{{ id }}")
+    currentPromotions, expiredPromotions, upcomingPromotions = get_all_promotions(url_template)   
+    all = upcomingPromotions + currentPromotions
+    logging.info(f"testing what exists{vars(all[0])}")
+    return render_template('index.html', blogPosts = all[:6])
 
 @promotions_bp.route('/', methods=['GET'])
 def promotions():
