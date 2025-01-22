@@ -356,9 +356,13 @@ function createNavigation(containerId, icons) {
         ${icons
           .map(
             (icon) => `
-          <li>
-            <a href="#">
-              <span class="nav-icon"><ion-icon name="${icon}-outline"></ion-icon></span>
+          <li id="route${
+            icon.route.split("/")[1] ? `-${icon.route.split("/")[1]}` : ""
+          }">
+            <a href="${icon.route}">
+              <span class="nav-icon"><ion-icon name="${
+                icon.icon
+              }-outline"></ion-icon></span>
             </a>
           </li>
         `
@@ -372,11 +376,36 @@ function createNavigation(containerId, icons) {
   // Append the generated HTML to the target container
   $(`#${containerId}`).html(navigationHtml);
 
+  function findElementById(array, id) {
+    return array.filter(function (el) {
+      return $(el).attr("id") === id;
+    });
+  }
+
   const $listItems = $(`#${containerId} .navigation ul li`);
   const $indicator = $(`#${containerId} .navigation .indicator`);
 
-  // Set the first item as active by default
-  $listItems.first().addClass("active");
+  let currentPage = window.location.pathname.split("/")[1];
+
+  // Find the specific list item by ID
+  let $targetLi = $listItems.filter(function () {
+    return $(this).attr("id") === `route-${currentPage}`;
+  });
+
+  console.log(
+    "current: ",
+    currentPage,
+    `#route-${currentPage}`,
+    $targetLi,
+    $(`#${containerId} .navigation ul li`).find(`#route-${currentPage}`),
+    $listItems
+  );
+  if ($targetLi.length) {
+    $targetLi.addClass("active");
+  } else {
+    console.log("No matching element found, setting the first item as active.");
+    $listItems.first().addClass("active");
+  }
 
   // Event listener for active state toggle
   $listItems.on("click", function () {

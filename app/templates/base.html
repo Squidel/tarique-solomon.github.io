@@ -8,7 +8,7 @@
     <link
       rel="icon"
       type="image/x-icon"
-      href="{{ url_for('static', filename='images/876Promotions-Favicon.png') }}"
+      href="{{ url_for('static', filename='images/favicon.ico') }}"
     />
 
     {% block links %}
@@ -179,7 +179,13 @@
 
     <script>
       $(document).ready(function () {
-        const icons = ["home", "person", "chatbubble", "camera", "settings"];
+        const icons = [
+          { icon: "home", route: "/" },
+          { icon: "person", route: "/blog" },
+          { icon: "chatbubble", route: "/about" },
+          { icon: "camera", route: "/" },
+          { icon: "settings", route: "/admin/console" },
+        ];
         createNavigation("navigation-component", icons);
       });
     </script>
