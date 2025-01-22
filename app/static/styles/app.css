@@ -98,7 +98,8 @@ body {
 .about { 
     display: flex; 
     align-items: center; 
-    background-image: linear-gradient(45deg, #363D73, #2794B3); 
+    /* background-image: linear-gradient(45deg, #363D73, #2794B3);  */
+    background-color: #ffd000;
     justify-content: space-between; 
     width: 100%; 
 } 
@@ -144,8 +145,8 @@ body {
     align-items: center; 
     justify-content: center; 
     flex-direction: column; 
-    margin: 4.8rem 0; 
-    padding: 0 5rem; 
+    /* margin: 4.8rem 0; 
+    padding: 0 5rem;  */
 } 
 
 .my-row { 
@@ -609,10 +610,14 @@ body {
 .card-parent {
     background-color: #fff;
     box-shadow: 3px 3px 20px 0px rgba(0, 0, 0, 0.1);
-    min-height: 100%;
-    max-height: 62vh;
+    min-height: 60vh;
+    max-height: 60vh;
     height: 100%;
     overflow-y: hidden;
+}
+
+.card-parent img{
+    max-height: 20vh;
 }
 
 #card-title {
@@ -756,10 +761,6 @@ body {
         text-align: center;
       }
   
-      .card-parent {
-        background-color: #fff;
-        box-shadow: 3px 3px 20px 0px rgba(0, 0, 0, 0.1);
-      }
   
       .card-header {
         background-color: #efefef;
@@ -956,4 +957,19 @@ body {
   .navigation {
     zoom: 0.7;
   }
+}
+.primary-theme-colour{
+    background-color: #0B0454;
+
+    /* color:white; */
+}
+.alt-theme-colour{
+    /* background-color: #330454; */
+    background-image: linear-gradient(180deg, #330454, #042554);
+    /* color: white; */
+}
+.theme-colour{
+    /* background-color: #042554; */
+    background-image: linear-gradient(180deg, #042554, #000);
+    /* color:white; */
 }
