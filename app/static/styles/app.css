@@ -540,7 +540,7 @@ body {
     text-overflow: var(--ellipsis);
 }
 
-.truncate-multiline {
+.truncate-multiline > p {
     display: -webkit-box; /* Flex-like behavior for truncation */
     -webkit-line-clamp: 8; /* Number of lines to show */
     -webkit-box-orient: vertical; /* Set the box to vertical */

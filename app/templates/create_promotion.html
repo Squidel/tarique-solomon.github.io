@@ -152,6 +152,16 @@
     </div>
 
     <div class="mb-3">
+      <label for="description">Description:</label>
+      <textarea
+        id="description"
+        value="{{ promotion.description if promotion and promotion.description else '' }}"
+        name="description"
+      ></textarea
+      ><br />
+    </div>
+
+    <div class="mb-3">
       <!-- Banner -->
       <label for="banner">Banner:</label>
       <input

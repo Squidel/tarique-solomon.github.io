@@ -45,12 +45,12 @@ def promo_to_dto(promos, url_template):
             except Exception as e:
                 url=''
                 logging.error(f'failed to render url: {e}')
-            promoObj = Promotion(promo.id, promo.promotion_name, promo.start_date, promo.end_date, promo.main_picture, url, promo.abbreviation)
+            promoObj = Promotion(promo.id, promo.promotion_name, promo.start_date, promo.end_date, promo.main_picture, url, promo.abbreviation, description =promo.description)
             promotions.append(promoObj)
     return promotions
 def dto_to_promo(promo:Promotion):
     logging.info('dto conversion')
-    return BlogPosts(id=promo.promo_id, abbreviation=promo.abbreviation, promotion_name = promo.promo_name, banner_image = promo.banner, upload_folder = promo.uploadFolder, start_date = promo.startDate, end_date = promo.endDate, main_picture = promo.mainPicture, is_activation=promo.is_activation)
+    return BlogPosts(id=promo.promo_id, abbreviation=promo.abbreviation, promotion_name = promo.promo_name, banner_image = promo.banner, upload_folder = promo.uploadFolder, start_date = promo.startDate, end_date = promo.endDate, main_picture = promo.mainPicture, is_activation=promo.is_activation, description =promo.description)
     
 def get_all_promotions(url_template):
     logging.info(f'Entered get_all_promotions method, with param: {url_template}')
@@ -72,7 +72,7 @@ def create_new_promotion(promo: Promotion):
             banner_name, banner_path = save_file(promo.banner, filePath)
             uploaded_paths.append(main_pic_file_path)
             uploaded_paths.append(banner_path)
-            orm = BlogPosts(abbreviation=promo.abbreviation, promotion_name = promo.promo_name, banner_image = banner_name, upload_folder = promo.uploadFolder, start_date = promo.startDate, end_date = promo.endDate, main_picture = main_pic_name, is_activation = promo.is_activation)
+            orm = BlogPosts(abbreviation=promo.abbreviation, promotion_name = promo.promo_name, banner_image = banner_name, upload_folder = promo.uploadFolder, start_date = promo.startDate, end_date = promo.endDate, main_picture = main_pic_name, is_activation = promo.is_activation, description =promo.description)
             # if isinstance(orm.start_date, str):
             #     orm.start_date = datetime.strptime(orm.start_date, '%Y-%m-%d').date() if orm.start_date else None
             # if isinstance(orm.end_date, str):

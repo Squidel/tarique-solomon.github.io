@@ -110,14 +110,11 @@
                 <div class="d-flex flex-column">
                   <div class="d-flex flex-column mb-3">
                     <div class="ms-md-3 mb-md-4">
-                      <p class="value truncate-multiline">
-                        bootstrap table to accordion`, `Borne from the need to
-                        ~quickly~ add responsiveness to a legacy MVC
-                        application, I created this javascript library to
-                        convert bootstrap tables to accordions. It probably
-                        needs a little cleanup but it worked to solve the
-                        problem at hand.
-                      </p>
+                      {% if card.description %}
+                      <div class="description py-1 px-4 truncate-multiline">
+                        {{ card.description | safe }}
+                      </div>
+                      {% endif %}
                     </div>
                     <div class="ms-md-3 mb-md-4">
                       {% if card.startDate %}

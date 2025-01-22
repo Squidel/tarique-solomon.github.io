@@ -20,7 +20,8 @@ def create_objects_from_form_data(form, files):
         'abbreviation': form.get('abbreviation'),
         'banner': files.get('banner'),
         'uploadFolder': form.get('uploadFolder'),
-        'is_activation': form.get('activation') == 'True'
+        'is_activation': form.get('activation') == 'True',
+        'description' : form.get('description')
     }
 
     dynamic_content_data = {
