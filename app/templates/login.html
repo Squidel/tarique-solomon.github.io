@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}  
+
+{% block links %}
+<link rel="stylesheet" href= "../static/styles/login.css"/>
+{% endblock %}
+
+{% block content %}
+
+        <div id="top" class="row">
+            <div id="jsif" class="col-10 col-lg-10">		
+                <p>Jamaica Social Investment Fund</p>
+                <p>INTRANET PORTAL</p>
+            </div>
+            </div>
+        </div>  
+                
+        <div id="loginbox" class="row">     
+            <div class="col-8 col-lg-2">
+                <li><a href='{{ auth_url }}'>Sign In</a></li>
+
+                {% if config.get("B2C_RESET_PASSWORD_AUTHORITY") %}
+                <li><a href='{{_build_auth_code_flow(authority=config["B2C_RESET_PASSWORD_AUTHORITY"])["auth_uri"]}}'>Reset Password</a></li>
+                {% endif %}
+            </div>       
+        </div>
+            
+        <div id="info" class="row">       
+            <div class="col-12 col-lg-4">
+                <img src="../static/images/informationIcon.png"/> 
+                <p>Need to know how to navigate or use the intranet? <br />Click the link below</p>
+                <a href ="/Intranet Documents/Help_Manuals/IntranetHelpManual/index.html">Help Manual</a>    
+            </div>
+        </div>
+            
+        <hr>
+        <footer id="loginfooter" class="row fixed-bottom">       
+            <p>&copy; Copyright Jamaica Social Investment Fund 2023</p>
+            <p>Powered by MSAL Python {{ version }}</footer>
+        </footer>
+
+{% endblock %}
+
+
+

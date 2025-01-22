@@ -1,0 +1,398 @@
+{% extends "base.html" %} {% block title %}{{promotion.promo_name}}{% endblock
+%} {% block content %}
+<div
+  id="promotion-container"
+  style="background-color: {{ theme.primary if theme.primary else 'transparent' }}"
+>
+  <div class="banner mh-25 {{promotion.promo_name}}-banner">
+    <img
+      src="{{ url_for('static', filename='images/' + promotion.banner) }}"
+      alt="Banner Image"
+      class="img-fluid w-100"
+      style="max-height: 40vh"
+    />
+  </div>
+
+  {% if not acceptingEntries %}
+  <div class="large-error p-3">
+    <p class="m-0">Promotion has ended, no longer accepting entries</p>
+  </div>
+  {% endif %}
+
+  <div
+    id="winners"
+    class="winners {{promotion.promo_name}}-winners"
+    style="display: {{ 'block' if winner_data['status'] else 'none' }}"
+  >
+    {% if winner_data['status'] %} {% for draw_name, winners in
+    winner_data['data'].items() %} {% if winners|length > 0 %}
+    <div>
+      <h2 class="text-center fw-bold">
+        {% if draw_name == 'First Draw' %} OUR WINNERS {%endif%} {{ draw_name |
+        replace('_', ' ') | title }} !
+      </h2>
+      {% if draw_name != 'first_draw' %}
+      <p class="text-center text-muted">
+        These participants will only be contacted if we are unable to get in
+        touch with winners from the previous draws.
+      </p>
+      {% endif %}
+    </div>
+    <div class="row row-cols-1 row-cols-md-3 p-5">
+      {% for winner in winners %}
+      <div class="p-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{ winner.full_name }}</h5>
+            <p class="card-text">
+              Reference Number: {{ winner.reference_number }}
+              <span class="pill {{winner.badge}}">
+                <span class="pill-text">{{winner.badge}}</span>
+              </span>
+            </p>
+            <a
+              href="{{ url_for('main.serve_files', filename=promotion.uploadFolder ~ winner.image) }}"
+              class="btn btn-primary"
+              >View Receipt</a
+            >
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <hr class="my-3" />
+    {% endif %} {% endfor %} {% endif %}
+  </div>
+
+  <div
+    class="container mt-5 pb-5 promotion-container {{promotion.promo_name}}-container"
+  >
+    <div class="row">
+      {% if not promotion.is_activation %}
+      <form id="submit-form" class="col-md-6">
+        <input
+          hidden
+          id="promotion_id"
+          name="promotion_id"
+          value="{{promotion.promo_id if promotion and promotion.promo_id else ''}}"
+        />
+        <!-- Form Column -->
+        <div>
+          <h2>{{ form_title }}</h2>
+          <div class="pt-3 text-center">
+            <h2>{{promotion.promo_name}}</h2>
+          </div>
+          <hr class="col-8 mx-auto mb-5" />
+
+          <div class="row">
+            <div class="form-floating mb-3 col-12 col-lg-6">
+              <select
+                class="form-select"
+                name="title"
+                id="title"
+                aria-label="Title"
+                {%
+                if
+                not
+                acceptingEntries
+                %}disabled{%
+                endif
+                %}
+              >
+                <option selected>Select a Title</option>
+                <option value="Mr">Mr</option>
+                <option value="Mrs">Mrs</option>
+                <option value="Ms">Ms</option>
+              </select>
+              <label class="ps-4" for="title">Title</label>
+              <small class="error-message text-danger"></small>
+            </div>
+          </div>
+
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                name="fname"
+                id="fname"
+                placeholder="John"
+                {%
+                if
+                not
+                acceptingEntries
+                %}disabled{%
+                endif
+                %}
+              />
+              <label class="ps-4" for="fname">First Name</label>
+              <small class="error-message text-danger"></small>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                name="lname"
+                id="lname"
+                placeholder="Brown"
+                {%
+                if
+                not
+                acceptingEntries
+                %}disabled{%
+                endif
+                %}
+              />
+              <label class="ps-4" for="lname">Last Name</label>
+              <small class="error-message text-danger"></small>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                id="email"
+                placeholder="name@example.com"
+                {%
+                if
+                not
+                acceptingEntries
+                %}disabled{%
+                endif
+                %}
+              />
+              <label class="ps-4" for="email">Email Address</label>
+              <small class="error-message text-danger"></small>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input
+                type="number"
+                class="form-control"
+                name="phone"
+                id="phone"
+                placeholder="Contact Number"
+                {%
+                if
+                not
+                acceptingEntries
+                %}disabled{%
+                endif
+                %}
+              />
+              <label class="ps-4" for="phone">Contact Number</label>
+              <small class="error-message text-danger"></small>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="purchasePhoto" class="form-label">Upload Receipt</label>
+            <input
+              class="form-control"
+              name="purchasePhoto"
+              type="file"
+              id="purchasePhoto"
+              data-field="upload"
+              {%
+              if
+              not
+              acceptingEntries
+              %}disabled{%
+              endif
+              %}
+            />
+            <small class="error-message text-danger"></small>
+            <p class="small card-text">File Upload Size Limit: 10 MB</p>
+            <p class="small card-text">
+              Please ensure you upload a full picture of the receipt including
+              the invoice number, date and products purchased.
+            </p>
+            <p class="small card-text">
+              You may enter as many times as you wish, but the submission will
+              only be approved if the invoice number is different and the date
+              is within the promotion period.
+            </p>
+          </div>
+
+          <button
+            id="submit-form-btn"
+            name="entryBtn"
+            type="submit"
+            class="btn btn-primary custom-button"
+            {%
+            if
+            not
+            acceptingEntries
+            %}disabled{%
+            endif
+            %}
+          >
+            Submit
+          </button>
+          <div
+            class="spinner-grow text-primary loading-spinner"
+            style="display: none"
+            role="status"
+          >
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </form>
+      {% else %}
+      <div class="col-md-6 main-pic mh-25 {{promotion.promo_name}}-main-pic">
+        <img
+          src="{{ url_for('static', filename='images/' + promotion.mainPicture) }}"
+          alt="Main Picture"
+          class="img-fluid w-100"
+        />
+      </div>
+      {% endif %}
+      <!-- Markdown Column -->
+      <div
+        class="col-md-6 container-markdown {{promotion.promo_name}}-container-markdown"
+      >
+        <div class="markdown-content">{{ content.how_to_enter | safe }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="html_blocks" class="html_blocks {{promotion.promo_name}}-html">
+  <div
+    class="col-lg-12 pb-5 prizes {{promotion.promo_name}}-prizes"
+    style="background-color: {{ theme.secondary if theme.secondary else 'transparent' }}"
+  >
+    {{ content.prizes | safe }}
+  </div>
+  <div
+    class="col-lg-12 pb-5 block1 {{promotion.promo_name}}-block1"
+    style="background-color: {{ theme.primary if theme.primary else 'transparent' }}"
+  >
+    {{ content.block1 | safe }}
+  </div>
+  <div
+    class="col-lg-12 pb-5 block2 {{promotion.promo_name}}-block2"
+    style="background-color: {{ theme.secondary if theme.secondary else 'transparent' }}"
+  >
+    {{ content.block2 | safe }}
+  </div>
+  <div
+    class="col-lg-12 pb-5 rules {{promotion.promo_name}}-rules"
+    style="background-color: {{ theme.primary if theme.primary else 'transparent' }}"
+  >
+    {{ content.rules | safe }}
+  </div>
+</div>
+
+<script>
+  $(document).ready(() => {
+    const is_form_valid = (form) => {
+      let isValid = true;
+      $(".error-message").text("");
+
+      form.find("input, select").each(function () {
+        // console.log('all values: ', $(this).val(), 'index: ', $(this).val().indexOf('Select'));
+        if (!$(this).val().trim() || $(this).val().indexOf("Select") >= 0) {
+          // console.log('this item is invalid: ',  $(this));
+          isValid = false;
+          $(this).addClass("is-invalid");
+          const fieldName = $(this).attr("name");
+          $(this)
+            .siblings(".error-message")
+            .text(
+              `${
+                fieldName.charAt(0).toUpperCase() + fieldName.slice(1)
+              } is required.`
+            );
+        } else {
+          $(this).removeClass("is-invalid");
+          $(this).addClass("is-valid");
+        }
+      });
+      return isValid;
+    };
+
+    $(":input").change(() => {
+      is_form_valid($("#submit-form"));
+    });
+
+    $("#submit-form").submit(function (e) {
+      e.preventDefault();
+
+      if (is_form_valid($("#submit-form"))) {
+        $("#submit-form-btn").prop("disabled", true);
+        $(".loading-spinner").show();
+        console.log("form is valid");
+        var form = $("#submit-form").serializeArray();
+        var formData = new FormData(this);
+
+        console.log("serialized form: ", form, formData, this);
+        $.ajax({
+          url: `${window.location.origin}/api/promotion/submit`, // Replace with your actual endpoint
+          crossDomain: true,
+          method: "POST",
+          contentType: false,
+          processData: false,
+          data: formData,
+          success: function (response) {
+            // console.log("Server Response:", response);
+            $("#submit-form").trigger("reset");
+            $("#submit-form")
+              .find("input, select")
+              .each(function () {
+                $(this).removeClass("is-invalid");
+                $(this).removeClass("is-valid");
+              });
+            $("#submit-form-btn").prop("disabled", false);
+            $(".loading-spinner").hide();
+
+            $("#myModal .modal-body").html(response.message);
+
+            // Optionally, you can set a custom title for the modal
+            $("#myModal .modal-title").text("Submission Successful");
+
+            // Show the modal
+            $("#myModal").modal("show");
+            let container_width = $("#myModal .modal-body").width();
+            $("#email_template_table").css("width", "");
+          },
+          error: function (xhr, status, error) {
+            // console.error("Error:", xhr);
+            let error_messages =
+              xhr && xhr.responseJSON && xhr.responseJSON.message;
+            // console.warn('error messages: ', error_messages);
+            let category = "Post";
+            $.each(error_messages, function (index, item) {
+              let field_name = item.field;
+              $(`*[data-field="${field_name}"]`).addClass("is-invalid");
+              $(`*[data-field="${field_name}"]`)
+                .siblings(".error-message")
+                .text(`${item.message}`);
+              $(`[name="${field_name}"]`).addClass("is-invalid");
+              $(`[name="${field_name}"]`)
+                .siblings(".error-message")
+                .text(`${item.message}`);
+            });
+            $("#submit-form-btn").prop("disabled", false);
+            $(".loading-spinner").hide();
+          },
+        });
+      } else {
+        console.warn("form is not valid");
+      }
+    });
+
+    const show_button = () => {
+      const container = $("#show-previous");
+      container.empty();
+      const button = $("<button>").text("show previous user submissions");
+      button.click(() => {
+        console.log("button clicked");
+        window.location.href = `${window.location.origin}/promotion/user-submissions`;
+      });
+      container.append(button);
+    };
+  });
+</script>
+{% endblock %}

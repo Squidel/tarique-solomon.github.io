@@ -1,0 +1,527 @@
+{% extends "base.html" %} {% block links %} {{ super() }}
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/7.5.1/tinymce.min.js"
+  integrity="sha512-8+JNyduy8cg+AUuQiuxKD2W7277rkqjlmEE/Po60jKpCXzc+EYwyVB8o3CnlTGf98+ElVPaOBWyme/8jJqseMA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+  integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.1/purify.min.js"
+  integrity="sha512-PBUtfPzExa/FxBEi6tr884CPkb9Wh0kjchdWPECubdH16+G0JjkGQHgWCO7zgINZlXtmVnpII7KnZctAPUAZWg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+{% endblock %} {% block title %}{{ 'Create New Promotion' if not promotion else
+'Edit Promotion' }}{% endblock %} {% block content %}
+<div
+  class="d-flex justify-content-center align-items-center min-vh-100 bg-light"
+>
+  <form id="create-form" class="p-4 border rounded shadow bg-white">
+    <!-- ID -->
+    <!-- <label for="id">ID:</label> -->
+    <input
+      hidden
+      id="promo_id"
+      name="promo_id"
+      value="{{promotion.promo_id if promotion and promotion.promo_id else ''}}"
+    />
+    <input
+      hidden
+      id="dnc_id"
+      name="dnc_id"
+      value="{{dpc.dnc_id if dpc and dpc.dnc_id else ''}}"
+    />
+    <input
+      hidden
+      id="theme_id"
+      name="theme_id"
+      value="{{theme.theme_id if theme and theme.theme_id else ''}}"
+    />
+    <!-- <input
+    type="number"
+    id="id"
+    name="id"
+    value="{{ promotion.promo_id if promotion and promotion.promo_id else '' }}"
+    placeholder="Enter ID"
+  /> -->
+    <br /><br />
+    <div class="mb-3 row">
+      <div class="col-md-6">
+        <!-- Name -->
+        <label for="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          name="promo_name"
+          value="{{ promotion.promo_name if promotion and promotion.promo_name else '' }}"
+          placeholder="Enter Name"
+        /><br /><br />
+      </div>
+      {%if not is_active and promotion %}
+      <div class="col-md-6">
+        <h4>Select Winner</h4>
+        <label for="startDate">Winner count:</label>
+        <input
+          type="number"
+          id="winner_count"
+          name="winner_count"
+        /><br /><br />
+        <input type="button" id="select_winner" value="Select Winners" />
+      </div>
+      {%endif%}
+    </div>
+    <div class="mb-3">
+      <!-- Start Date -->
+      <label for="startDate">Requires activation:</label>
+      {% if promotion and promotion.is_activation %}
+      <input
+        type="checkbox"
+        id="activation"
+        value="{{ promotion.is_activation if promotion and promotion.is_activation else False }}"
+        name="activation"
+        checked
+      />
+      {% else %}
+      <input
+        type="checkbox"
+        id="activation"
+        value="{{ promotion.is_activation if promotion and promotion.is_activation else False }}"
+        name="activation"
+      />
+      {% endif %}<br /><br />
+    </div>
+    <div class="mb-3">
+      <!-- Start Date -->
+      <label for="startDate">Start Date:</label>
+      <input
+        type="date"
+        id="startDate"
+        value="{{ promotion.startDate if promotion and promotion.startDate else '' }}"
+        name="startDate"
+      /><br /><br />
+    </div>
+    <div class="mb-3">
+      <!-- End Date -->
+      <label for="endDate">End Date:</label>
+      <input
+        type="date"
+        id="endDate"
+        value="{{ promotion.endDate if promotion and promotion.endDate else '' }}"
+        name="endDate"
+      /><br /><br />
+    </div>
+    <div class="mb-3">
+      <!-- Main Picture -->
+      <label for="mainPicture">Main Picture:</label>
+      <input
+        type="file"
+        id="mainPicture"
+        name="mainPicture"
+        accept="image/*"
+      /><br /><br />
+    </div>
+
+    <div class="mb-3">
+      <!-- URL -->
+      <label for="url">URL:</label>
+      <input
+        type="url"
+        id="url"
+        name="url"
+        value="{{ promotion.url if promotion and promotion.url else '' }}"
+        placeholder="Enter URL"
+      /><br /><br />
+    </div>
+
+    <div class="mb-3">
+      <!-- Abbreviation -->
+      <label for="abbreviation">Abbreviation:</label>
+      <input
+        type="text"
+        id="abbreviation"
+        name="abbreviation"
+        value="{{ promotion.abbreviation if promotion and promotion.abbreviation else '' }}"
+        placeholder="Enter Abbreviation"
+      /><br /><br />
+    </div>
+
+    <div class="mb-3">
+      <!-- Banner -->
+      <label for="banner">Banner:</label>
+      <input
+        type="file"
+        id="banner"
+        name="banner"
+        accept="image/*"
+      /><br /><br />
+      <span id="banner-error"></span>
+    </div>
+    <div class="mb-3">
+      <!-- Upload Folder -->
+      <label for="uploadFolder">Upload Folder:</label>
+      <input
+        type="text"
+        id="uploadFolder"
+        name="uploadFolder"
+        value="{{ promotion.uploadFolder if promotion and promotion.uploadFolder else '' }}"
+        placeholder="Enter Upload Folder"
+      /><br /><br />
+    </div>
+
+    <div class="create_theme">
+      <h2>Theme Information</h2>
+      <div class="mb-3">
+        <label for="theme_name">Theme Name:</label>
+        <input
+          type="text"
+          id="theme_name"
+          value="{{ theme.theme_name if theme and theme.theme_name else '' }}"
+          name="theme_name"
+        /><br />
+      </div>
+
+      <div class="mb-3">
+        <label for="primary_color">Primary Color:</label>
+        <input
+          type="color"
+          id="primary_color"
+          value="{{ theme.primary if theme and theme.primary else '' }}"
+          name="primary"
+        /><br />
+      </div>
+
+      <div class="mb-3">
+        <label for="secondary_color">Secondary Color:</label>
+        <input
+          type="color"
+          id="secondary_color"
+          value="{{ theme.secondary if theme and theme.secondary else '' }}"
+          name="secondary"
+        /><br />
+      </div>
+    </div>
+
+    <div class="create-dynamic">
+      <h2>Dynamic Content</h2>
+      <div class="mb-3">
+        <label for="how_to_enter">How to Enter:</label>
+        <textarea
+          id="how_to_enter"
+          value="{{ dpc.how_to_enter if dpc and dpc.how_to_enter else '' }}"
+          name="how_to_enter"
+        ></textarea
+        ><br />
+      </div>
+
+      <div class="mb-3">
+        <label for="prizes">Prizes:</label>
+        <textarea
+          id="prizes"
+          value="{{ dpc.prizes if dpc and dpc.prizes else '' }}"
+          name="prizes"
+        ></textarea
+        ><br />
+      </div>
+
+      <div class="mb-3">
+        <label for="block1">Block 1:</label>
+        <textarea
+          id="block1"
+          value="{{ dpc.block1 if dpc and dpc.block1 else '' }}"
+          name="block1"
+        ></textarea
+        ><br />
+      </div>
+
+      <div class="mb-3">
+        <label for="block2">Block 2:</label>
+        <textarea
+          id="block2"
+          value="{{ dpc.block2 if dpc and dpc.block2 else '' }}"
+          name="block2"
+        ></textarea
+        ><br />
+      </div>
+
+      <div class="mb-3">
+        <label for="rules">Rules:</label>
+        <textarea
+          id="rules"
+          value="{{ dpc.rules if dpc and dpc.rules else '' }}"
+          name="rules"
+        ></textarea
+        ><br />
+      </div>
+    </div>
+
+    <button type="submit" id="save-promo" class="btn btn-primary custom-button">
+      Submit
+    </button>
+  </form>
+</div>
+
+<script>
+  // Function to convert accordion children to block quotes
+  const convertAccordionToBlockquotes = (accordionHtml) => {
+    // Create a temporary DOM element to parse the HTML
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(accordionHtml, "text/html");
+
+    // Find all accordion items
+    const accordionItems = doc.querySelectorAll(".accordion-item");
+    let blockquoteHtml = "";
+
+    accordionItems.forEach((item, index) => {
+      const title =
+        item.querySelector(".accordion-button")?.textContent ||
+        `Accordion Item ${index + 1}`;
+      const body = item.querySelector(".accordion-body")?.innerHTML || "";
+
+      // Create a blockquote with the title and body
+      //<p><strong>${title}</strong></p>
+      blockquoteHtml += `
+            <blockquote>
+
+                <p>${body}</p>
+            </blockquote>`;
+    });
+
+    return blockquoteHtml;
+  };
+  const generateAccordionWithFixedChildren = (htmlContent) => {
+    console.log("generate button pressed");
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, "text/html");
+    const blockquotes = doc.querySelectorAll("blockquote");
+    const accordionId = "rules_block";
+    const totalChildren = 4; // Fixed number of children
+    const childNames = [
+      "Rules",
+      "Method of  Notifying Winners",
+      "Claiming Periods and Requirements",
+      "Accordion Item #4",
+    ];
+
+    let accordionItems = "";
+
+    for (let i = 0; i < totalChildren; i++) {
+      const blockquoteContent = blockquotes[i]
+        ? blockquotes[i].innerHTML
+        : `<p>Placeholder content for ${childNames[i]}</p>`;
+      const id = `${accordionId}-item-${i}`;
+      if (blockquotes[i]) {
+        accordionItems += `
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading-${id}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${id}" aria-expanded="false" aria-controls="collapse-${id}">
+                        ${childNames[i]}
+                    </button>
+                </h2>
+                <div id="collapse-${id}" class="accordion-collapse collapse" aria-labelledby="heading-${id}" data-bs-parent="#${accordionId}">
+                    <div class="accordion-body">
+                        ${blockquoteContent}
+                    </div>
+                </div>
+            </div>`;
+      }
+    }
+
+    return `
+        <div class="accordion w-75 pt-5 mx-auto" id="${accordionId}">
+            ${accordionItems}
+        </div>`;
+  };
+
+  tinymce.init({
+    selector: "textarea",
+    license_key: "gpl",
+    plugins: "code",
+    toolbar:
+      "undo redo | formatselect | bold italic | code | generateAccordion | deconstructAccordion",
+    setup: function (editor) {
+      editor.ui.registry.addIcon(
+        "toAccordion",
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M64 464c-8.8 0-16-7.2-16-16L48 64c0-8.8 7.2-16 16-16l160 0 0 80c0 17.7 14.3 32 32 32l80 0 0 288c0 8.8-7.2 16-16 16L64 464zM64 0C28.7 0 0 28.7 0 64L0 448c0 35.3 28.7 64 64 64l256 0c35.3 0 64-28.7 64-64l0-293.5c0-17-6.7-33.3-18.7-45.3L274.7 18.7C262.7 6.7 246.5 0 229.5 0L64 0zm97 289c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0L79 303c-9.4 9.4-9.4 24.6 0 33.9l48 48c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-31-31 31-31zM257 255c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l31 31-31 31c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l48-48c9.4-9.4 9.4-24.6 0-33.9l-48-48z"/></svg>'
+      );
+
+      if (editor.id === "rules") {
+        editor.ui.registry.addButton("generateAccordion", {
+          // text: "Generate Accordion",
+          icon: "accordion",
+          tooltip: "Convert blockquotes to accordion",
+          onAction: function () {
+            const content = editor.getContent();
+
+            // Generate accordion HTML
+            const accordionHtml = generateAccordionWithFixedChildren(content);
+
+            // Replace the editor content with the accordion HTML
+            editor.setContent(accordionHtml);
+          },
+        });
+        editor.ui.registry.addButton("deconstructAccordion", {
+          // text: "Generate Accordion",
+          icon: "accordion-toggle",
+          tooltip: "Convert accordion to blockquotes",
+          onAction: function () {
+            const content = editor.getContent();
+
+            // Generate accordion HTML
+            const blockQuotes = convertAccordionToBlockquotes(content);
+
+            // Replace the editor content with the accordion HTML
+            editor.setContent(blockQuotes);
+          },
+        });
+      }
+      editor.on("init", function () {
+        if (editor.id === "block1") {
+          editor.setContent(
+            `{{ dpc.block1 | safe if dpc and dpc.block1 else "" }}`
+          );
+        } else if (editor.id === "block2") {
+          editor.setContent(
+            `{{ dpc.block2 | safe if dpc and dpc.block2 else "" }}`
+          );
+        } else if (editor.id === "how_to_enter") {
+          editor.setContent(
+            `{{ dpc.how_to_enter | safe if dpc and dpc.how_to_enter else "" }} `
+          );
+        } else if (editor.id === "prizes") {
+          editor.setContent(
+            `{{ dpc.prizes | safe if dpc and dpc.prizes else "" }}`
+          );
+        } else if (editor.id === "rules") {
+          let rules_content = `{{ dpc.rules | safe if dpc and dpc.rules else "" }}`;
+          editor.setContent(convertAccordionToBlockquotes(rules_content));
+        }
+        editor.undoManager.add();
+      });
+    },
+  });
+
+  $(document).ready(() => {
+    const bannerDimension = () => {
+      console.log("entered banner check");
+      var fileInput = $("#banner")[0];
+      var file = fileInput.files[0];
+      $("#banner-error").html("");
+      $("#banner-error").removeClass("text-danger");
+
+      if (!file) {
+        $("#banner-error").text("Please select an image file.");
+        $("#banner-error").addClass("text-danger");
+        return;
+      }
+
+      var validImageTypes = ["image/jpeg", "image/png", "image/gif"];
+      if (!validImageTypes.includes(file.type)) {
+        $("#banner-error").text(
+          "Invalid file type. Only JPEG, PNG, and GIF are allowed."
+        );
+        $("#banner-error").addClass("text-danger");
+        return;
+      }
+
+      // Check image dimensions (width and height)
+      var img = new Image();
+      img.onload = function () {
+        // Example: Require width to be at least 300px and height to be at least 200px
+        if (img.width < 1600 || img.height < 500) {
+          $("#banner-error").text(
+            "Image dimensions must be exactly 1600x500px."
+          );
+          $("#banner-error").addClass("text-danger");
+          $("#banner").val("");
+        } else {
+          $("#banner-error").text(""); // Clear error message
+        }
+      };
+      img.onerror = function () {
+        $("#banner-error").text("The file is not a valid image.");
+        $("#banner").val("");
+        $("#banner-error").addClass("text-danger");
+      };
+
+      // Read the image file
+      img.src = URL.createObjectURL(file);
+    };
+
+    $("#banner").change(() => {
+      bannerDimension();
+    });
+    $("#activation").change(function () {
+      // Toggle the checked status of the checkbox
+      var isChecked = $("#activation").prop("checked"); // Get the current checked state
+      $("#activation").val(isChecked ? "True" : "False"); // Set the value based on the checked state
+    });
+    $("#select_winner").click((e) => {
+      e.preventDefault();
+      var winner_count = $("#winner_count").val();
+      let data = {
+        id: "{{promotion.promo_id if promotion and promotion.promo_id else ''}}",
+        num_of_winners: winner_count,
+      };
+      $.ajax({
+        url: `${window.location.origin}/api/promotion/select-winners`, // Replace with your actual endpoint
+        crossDomain: true,
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function (response) {
+          console.log("Server Response:", response);
+          alert("Winners generated for promotion!");
+          $("#select_winner").prop("disabled", true);
+        },
+        error: function (xhr, status, error) {
+          console.error("Error:", error);
+          alert("Failed to generate promotion winners");
+        },
+      });
+    });
+    $("#create-form").submit(function (e) {
+      e.preventDefault();
+      tinymce.triggerSave();
+
+      console.log("about to save");
+      var form = $("#create-form").serializeArray();
+      var formData = new FormData(this);
+
+      // formData.append("is_activation", $("#activation").val());
+
+      console.log("serialized form: ", form, formData, this);
+      // console.log("json: ", JSON.stringify(jsonData));
+      let url = `${window.location.origin}/api/promotion/create`;
+      let method = "POST";
+      console.log("url before check edit: ", url);
+      if ($("#promo_id").val()) {
+        url = `${window.location.origin}/api/promotion/modify`;
+        method = "PUT";
+        console.log("url updated for edit: ", url);
+      }
+      $.ajax({
+        url: url, // Replace with your actual endpoint
+        crossDomain: true,
+        method: method,
+        contentType: false,
+        processData: false,
+        data: formData,
+        success: function (response) {
+          console.log("Server Response:", response);
+          alert("Content saved successfully!");
+        },
+        error: function (xhr, status, error) {
+          console.error("Error:", error);
+          alert("Failed to save content.");
+        },
+      });
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Contact Us{% endblock %}  
+
+{% block user %}{{ user.get("name") }} <i class="fa-solid fa-user"></i>{% endblock %}
+
+{% block content %}
+
+<div id="contact" class="py-4 py-md-4 py-lg-5">
+
+  <div class="background-image"></div>
+
+  <div class="col-11 mx-3">
+    <div class="row justify-content-end">
+      <div class="col-7 col-md-6 col-lg-5">
+        <div class="my-3">
+          <h1 class="fs-1 fw-bolder">Contact Us</h1>
+        </div>
+        <div class="my-3">
+          <h3 class="fs-2">We are currently handling all requests at XCLUSIV Digital</h3>
+        </div>
+        <h5 class="small">Click the button below to be redirected to the relevant contact form</h5>
+        <a href="https://www.xclusivdigital.com/contact-us" class="btn btn-primary custom-button">GO TO XCLUSIV DIGITAL</a>
+    
+        <hr class="my-3 my-md-5 my-lg-5">
+    
+        <div>
+          <div class="mb-3">
+            <h5>Email</h5>
+            <div class="row">
+              <img src="../static/images/email-icon.svg" class="img-fluid col-2 col-lg-1"/>
+              <a href="mailto:info@xclusivdigital.com" class="col-10 col-lg-11">info@xclusivdigital.com</a>
+            </div>
+          </div>
+          <div class="my-3">
+            <h5>Call</h5>
+            <div class="row">
+              <img src="../static/images/call-icon.svg" class="img-fluid col-2 col-lg-1"/>
+              <a href="tel:(876) 293 - 2639" class="col-10 col-lg-11">(876) 293 - 2639</a>
+            </div>
+          </div>
+          <div class="my-3">
+            <h6>Kingston, Jamaica</h6>
+            <h6>Online Business</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  
+</div>
+
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}Page Not Found{% endblock %} {% block
+content %}
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <img
+      src="../static/images/404-artwork.svg"
+      alt="404-artwork"
+      class="img-fluid col-6"
+    />
+    <h3 class="text-center fw-bold">Page Not Found</h3>
+    <p class="text-muted text-center">
+      We're sorry, the page you requested could not be found<br />Please go back
+      to the homepage
+    </p>
+  </div>
+  <div class="row flex-column align-items-center justify-content-center">
+    <div class="col-2 text-center my-1">
+      <a href="{{ url_for('main.index') }}" class="btn btn-primary">GO HOME</a>
+    </div>
+    <div class="col-3 text-center my-1">
+      <a href="{{ url_for('promotions.promotions') }}" class="btn btn-primary"
+        >BROWSE PROMOTIONS</a
+      >
+    </div>
+  </div>
+</div>
+
+{% endblock %}

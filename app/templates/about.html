@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}  
+
+{% block user %}{{ user.get("name") }} <i class="fa-solid fa-user"></i>{% endblock %}
+
+{% block content %}
+
+<div id="about">
+
+    <div class="container-fluid d-flex align-items-center justify-content-center">
+            <div class="background-image"></div>
+            <div>
+                <h1 class="text-center">About Us</h1>
+            </div>
+    </div>
+    
+    <div class="py-5 container">
+        <div class="col-10 col-lg-10 mx-auto">
+            <h3>
+                Our Mission
+            </h3>
+            <hr>
+            <p style="text-align: justify;">
+                At 876 Promotions, a division of XCLUSIV Digital, our mission is to provide a seamless and engaging platform for 
+                individuals across the island to participate in exciting promotions. We are dedicated to simplifying the entry 
+                management process and connecting visitors with captivating opportunities. Whether it's a thrilling contest, a 
+                rewarding giveaway, or a unique event, we strive to ensure that everyone has an equal chance to participate and 
+                be part of the action. With our user-friendly interface and commitment to excellence, we aim to be the go-to platform 
+                for individuals seeking exclusive promotions island-wide. Join us and embark on a journey filled with incredible experiences, 
+                as we bring the best opportunities right to your fingertips.
+            </p>
+        </div>
+    
+    
+    
+        <div class="my-5 col-10 col-lg-10 mx-auto">
+            <h3>
+                Our Vision
+            </h3>
+            <hr>
+            <p style="text-align: justify;">
+                At 876 Promotions, a division of XCLUSIV Digital, our vision is to become the premier destination 
+                for individuals seeking extraordinary promotional experiences throughout the island. We aspire to be at the 
+                forefront of innovation, continuously introducing cutting-edge technologies and strategies to enhance the entry 
+                management process. By leveraging our expertise and industry insights, we aim to revolutionize the way promotions 
+                are conducted, ensuring maximum accessibility, fairness, and excitement for all participants. We envision a future 
+                where individuals can easily explore and engage with a wide array of promotions, each tailored to their unique interests. 
+                Through strategic partnerships and a deep understanding of our audience, we strive to create an immersive and dynamic platform 
+                that consistently exceeds expectations. Our unwavering commitment to excellence drives us to continuously raise the bar and redefine 
+                the promotional landscape, enabling unforgettable experiences that leave a lasting impact on our visitors.
+            </p>
+        </div>
+    </div>    
+
+</div>
+
+
+{% endblock %}

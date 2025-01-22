@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}Promotions{% endblock %}  
+
+{% block content %}
+
+<div class="container-fluid p-5">
+
+    <div class="my-3">
+        <div>
+            <h5 class="rounded-5 orange p-3">Upcoming Promotions</h5>
+        </div>
+        {% if upcomingPromotionsWithURLs|length > 0 %}
+        {% for promotion in upcomingPromotionsWithURLs %}
+        <div class="card" style="width: 18rem;">
+            <img src="{{ url_for('static', filename='images/' + promotion.mainPicture) }}" class="card-img-top p-4" alt="Image representing the promotion: {{ promotion.name }}">
+            <div class="card-body">
+              <h5 class="card-title"><strong>{{ promotion.name }}</strong></h5>
+              <p class="card-text">Promotion Duration: {{ promotion.startDate }} - {{ promotion.endDate }}</p>
+              <p class="card-text">Cut Off Time: 11:59 PM</p>
+        
+              <a href="{{ promotion.url }}" class="btn btn-primary">Manage Entries</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div>
+            There are currently no upcoming promotions. Check back later!
+        </div>
+        {% endif %}
+        
+    </div>
+    <hr>
+
+    <div class="my-3">
+        <div>
+            <h5 class="rounded-5 green p-3">Active Promotions</h5>
+        </div>
+
+        {% if activePromotionsWithURLs|length > 0 %}
+        {% for promotion in activePromotionsWithURLs %}
+        <div class="card" style="width: 18rem;">
+            <img src="{{ url_for('static', filename='images/' + promotion.mainPicture) }}" class="card-img-top p-4" alt="Image representing the promotion: {{ promotion.name }}">
+            <div class="card-body">
+              <h5 class="card-title"><strong>{{ promotion.name }}</strong></h5>
+              <p class="card-text">Promotion Duration: {{ promotion.startDate }} - {{ promotion.endDate }}</p>
+              <p class="card-text">Cut Off Time: 11:59 PM</p>
+        
+              <a href="{{ promotion.url }}" class="btn btn-primary">Manage Entries</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div>
+            There are currently no active promotions. Check back later!
+        </div>
+        {% endif %}
+        
+    </div>
+    <hr>
+    <div class="p-5 my-3 mediumgrey">
+        <div>
+            <h3 class="rounded-5 fw-bolder p-3">Past Promotions</h3>
+        </div>
+        
+        
+        <div class="row">
+        {% if inactivePromotionsWithURLs|length > 0 %}
+        {% for promotion in inactivePromotionsWithURLs %}
+        <div class="card mx-2" style="width: 18rem;">
+            <img src="{{ url_for('static', filename='images/' + promotion.mainPicture) }}" class="card-img-top p-4" alt="Image representing the promotion: {{ promotion.name }}">
+            <div class="card-body">
+              <h5 class="card-title"><strong>{{ promotion.name }}</strong></h5>
+              <p class="card-text">Promotion Duration: {{ promotion.startDate }} - {{ promotion.endDate }}</p>
+              <p class="card-text">Cut Off Time: 11:59 PM</p>
+        
+              <a href="{{ promotion.url }}" class="btn btn-primary">Manage Entries</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div>
+            There are currently no past promotions. Check back later!
+        </div>
+        {% endif %}
+        </div>
+    </div>
+    
+</div>
+
+{% endblock %}
