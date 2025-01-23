@@ -35,7 +35,7 @@ def index():
     url_template = Template("/blog/{{ id }}")
     currentPromotions, expiredPromotions, upcomingPromotions = get_all_promotions(url_template)   
     all = upcomingPromotions + currentPromotions
-    logging.info(f"testing what exists{vars(all[0])}")
+    # logging.info(f"testing what exists{vars(all[0])}")
     return render_template('index.html', blogPosts = all[:6])
 
 @promotions_bp.route('/', methods=['GET'])
@@ -150,7 +150,7 @@ def manage_entries(id):
     return render_template('manageEntries.html', promotion_info=promotion_info, entries=entries, winner_data=winner_data)
 @index_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    # register_user('tarique.solomon@jsif.org', 'admin,', 'Password')
+    register_user('tarique.solomon@jsif.org', 'admin,', 'Password')
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -201,7 +201,7 @@ def admin_console():
     currentPromotions, expiredPromotions, upcomingPromotions = get_all_promotions(url_template)
     promo_arr = currentPromotions + upcomingPromotions + expiredPromotions
     promo_abbr = [{'abbrv':f"{item.abbreviation}", 'id':f"{item.promo_id}", 'winner_data': get_promotion_winners(item.promo_id) } for item in promo_arr]
-    logging.info(f"promotion management: {promo_abbr[0]['winner_data']}")
+    # logging.info(f"promotion management: {promo_abbr[0]['winner_data']}")
     return render_template('admin_console.html', records=promo_abbr)
 def get_roles():
     logging.info('getting roles')

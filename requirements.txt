@@ -16,3 +16,4 @@ mysqlclient
 flask-bcrypt 
 flask-login 
 flask-wtf
+sqlparse

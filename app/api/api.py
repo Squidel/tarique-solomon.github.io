@@ -179,7 +179,7 @@ def import_database():
     file = request.files['file']
     result = process_import_db(file)
     if result:
-        response.message = 'winner badge set'
+        response.message = 'successfully imported database'
         response.status_code = 200
     else:
         response.message='Please contact adminstrator'

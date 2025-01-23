@@ -4,6 +4,8 @@ from app.app_config import Config
 import io
 import app.templates
 from sqlalchemy import text
+import sqlparse
+import re
 
 def save_file(file, root_location, path=None):
     file_name = None
@@ -61,21 +63,24 @@ def import_db(sql_file):
         with open(sql_file, 'r', encoding='utf-8') as file:
             # sql_script = text(file.read())
             sql_script = file.read()
+            sql_script = sql_script.replace("\t", "")  # Replace tab characters
+            sql_script = sql_script.replace("\n", "")  # Replace new lines
+            sql_script = sql_script.replace("\r", "")  # Replace carriage returns
             
-            # Preprocess the script: Escape or normalize whitespace
-            sql_script = sql_script.replace("\t", " ")  # Replace tabs with spaces
-            sql_script = sql_script.replace("\n", " ")  # Replace new lines with spaces
-            sql_script = sql_script.replace("\r", " ")  # Replace carriage returns with spaces
-            sql_script = " ".join(sql_script.split())  # Normalize all whitespace
 
         with db.engine.connect() as connection:
             with connection.begin():
                 # connection.execute(sql_script)
                 # isSuccess = True
-                for statement in sql_script.split(';'):
+                statements = sqlparse.split(sql_script)
+                # statements = re.split(r';\s*(?=[^"]*(?:"[^"]*"[^"]*)*$)', sql_script)
+                for statement in statements:
                     statement = statement.strip()
                     if statement:
-                        connection.execute(statement)
+                        try:
+                            connection.execute(text(statement))
+                        except Exception as e:
+                            logging.error(f'error executing error: {e}')
                 isSuccess = True
                 
     except Exception as e:
