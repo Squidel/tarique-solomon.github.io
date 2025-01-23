@@ -17,6 +17,12 @@ logging.basicConfig(filename='logs/app.log', level=logging.INFO,
 class Config:
     DEBUG = False
     SECRET_KEY = bytes.fromhex(os.getenv('SECRET_KEY_HEX'))
+    
+    #actual values
+    settings = None
+    
+    def init_config(app):
+        Config.settings = app.config
 
 
 # Development configuration

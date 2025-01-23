@@ -55,6 +55,16 @@
                     >
                   </li>
                   <li class="list-group-item">
+                    <a href="{{ url_for('admin.export_database') }}"
+                      >Export Database</a
+                    >
+                  </li>
+                  <li class="list-group-item">
+                    <a id="db-import" href=""
+                      >Import Database</a
+                    >
+                  </li>
+                  <li class="list-group-item">
                     <a href="{{ url_for('admin.register') }}">Register User</a>
                   </li>
                   <li class="list-group-item">
@@ -400,5 +410,70 @@
       return mergedPdfFile;
     };
   });
+  
+  $('#db-import').click((e)=>{
+    e.preventDefault();
+    displayUploadModal();
+  })
+  const displayUploadModal = ()=>{
+    $("#myModal .modal-body").html(`
+            <form id="globalModalForm">
+                <div class="mb-3">
+                    <label for="globalModalFileInput" class="form-label">Choose File</label>
+                    <input type="file" id="globalModalFileInput" class="form-control" required>
+                </div>
+                <div id="globalModalResponse" class="alert d-none" role="alert"></div>
+            </form>
+        `);
+
+            // Optionally, you can set a custom title for the modal
+            $("#myModal .modal-title").text("Upload SQL file for import");
+            $("#myModal .modal-footer").empty();
+            $("#myModal .modal-footer").html(`
+            <button id="globalModalSubmitButton" type="button" class="btn btn-primary">Upload</button>
+        `);
+
+            // Show the modal
+            $("#myModal").modal("show");
+  }
+
+  $(document).on('click', '#globalModalSubmitButton', function () {
+        const fileInput = $('#globalModalFileInput')[0];
+        if (!fileInput.files.length) {
+            showGlobalModalResponse('Please select a file.', 'danger');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        // AJAX request to upload the file
+        $.ajax({
+          url: `${window.location.origin}/api/import`, // Replace with your backend endpoint
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                const message = response.message || 'File uploaded successfully!';
+                alert(message, 'success');
+            },
+            error: function (xhr) {
+                const errorMsg = xhr.responseJSON?.error || 'An error occurred while uploading.';
+                alert(errorMsg, 'danger');
+            },
+        });
+    });
+
+    function showGlobalModalResponse(message, type) {
+        const responseDiv = $('#globalModalResponse');
+        responseDiv.removeClass('d-none alert-success alert-danger')
+                   .addClass(`alert-${type}`)
+                   .text(message)
+                   .fadeIn();
+
+        // Optionally auto-hide the response after a delay
+        setTimeout(() => responseDiv.fadeOut(), 5000);
+    }
 </script>
 {% endblock %}

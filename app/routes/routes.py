@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template, send_from_directory, flash, redirect, url_for, session, current_app
+from flask import Blueprint, request, jsonify, render_template, send_from_directory, flash, redirect, url_for, session, current_app, Response
 from jinja2 import Template
 import logging
 import os
@@ -6,7 +6,7 @@ from app.services.promotion_service import get_all_promotions, create_new_promot
 from app.services.promotion_winners_service import get_promotion_winners, get_promotion_participants, get_all_user_promotions, get_winner_badge
 from datetime import datetime, timedelta
 from app import logging
-from app.services.file_service import does_tempalte_exist
+from app.services.file_service import does_tempalte_exist, export_db, process_import_db
 from app.services.user_service import register_user, get_user_by_email
 from app.database.models.models import Users
 from flask_login import login_user, logout_user, login_required, current_user
@@ -213,7 +213,19 @@ def get_roles():
     logging.info(f'promo abbre: {promo_abbr}')
     options = ['admin', 'user', 'create', 'manage'] + promo_abbr
     return options
-
+@admin_bp.route('/export', methods=['Get'])
+@role_required('admin,manage')
+@login_required
+def export_database():
+    buffer = export_db()
+    response = Response(
+        buffer.getvalue(),
+        mimetype="application/sql",
+        headers={
+            "Content-Disposition": "attachment; filename=database_export.sql"
+        },
+    )
+    return response
 
 # Utility function to get routes for a specific blueprint
 def get_routes_for_blueprint(blueprint_name):
