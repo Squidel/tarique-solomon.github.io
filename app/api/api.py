@@ -3,8 +3,11 @@ from app.dto import Promotion, APIResponse, conver_json_to_class, create_objects
 from app.services.promotion_service import create_new_promotion, update_record
 from app.services.dynamic_content_service import create_new_dynamic_content, create_new_theme_content, update_dynamic_content, update_theme
 from app.services.promotion_winners_service import generate_promotion_winner, submit_promotion,create_winner_badge
+from app.services.file_service import process_import_db
 from app import logging
 from flask import Blueprint, request, jsonify, render_template
+from flask_login import login_user, logout_user, login_required, current_user
+from app.error_handlers import role_required
 
 api_bp = Blueprint('api', __name__)
 
@@ -165,6 +168,20 @@ def set_winner_badge():
             response.status_code = 200
     except Exception as e:
         logging.error(f'Error when attempting to set winner badge: {e}')
+        response.message='Please contact adminstrator'
+        response.status_code = 500
+    return response.make_response()
+@api_bp.route('/import', methods=['Post'])
+@role_required('admin,manage')
+@login_required
+def import_database():
+    response = APIResponse()
+    file = request.files['file']
+    result = process_import_db(file)
+    if result:
+        response.message = 'successfully imported database'
+        response.status_code = 200
+    else:
         response.message='Please contact adminstrator'
         response.status_code = 500
     return response.make_response()

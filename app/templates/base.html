@@ -188,6 +188,10 @@
         ];
         createNavigation("navigation-component", icons);
       });
+
+      $(".close-modal").click((e) => {
+        $("#myModal").modal("hide");
+      });
     </script>
 
     {% block scripts %} {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template, send_from_directory, flash, redirect, url_for, session, current_app
+from flask import Blueprint, request, jsonify, render_template, send_from_directory, flash, redirect, url_for, session, current_app, Response
 from jinja2 import Template
 import logging
 import os
@@ -6,7 +6,7 @@ from app.services.promotion_service import get_all_promotions, create_new_promot
 from app.services.promotion_winners_service import get_promotion_winners, get_promotion_participants, get_all_user_promotions, get_winner_badge
 from datetime import datetime, timedelta
 from app import logging
-from app.services.file_service import does_tempalte_exist
+from app.services.file_service import does_tempalte_exist, export_db, process_import_db
 from app.services.user_service import register_user, get_user_by_email
 from app.database.models.models import Users
 from flask_login import login_user, logout_user, login_required, current_user
@@ -35,7 +35,7 @@ def index():
     url_template = Template("/blog/{{ id }}")
     currentPromotions, expiredPromotions, upcomingPromotions = get_all_promotions(url_template)   
     all = upcomingPromotions + currentPromotions
-    logging.info(f"testing what exists{vars(all[0])}")
+    # logging.info(f"testing what exists{vars(all[0])}")
     return render_template('index.html', blogPosts = all[:6])
 
 @promotions_bp.route('/', methods=['GET'])
@@ -150,7 +150,7 @@ def manage_entries(id):
     return render_template('manageEntries.html', promotion_info=promotion_info, entries=entries, winner_data=winner_data)
 @index_bp.route('/login', methods=['GET', 'POST'])
 def login():
-    # register_user('tarique.solomon@jsif.org', 'admin,', 'Password')
+    register_user('tarique.solomon@jsif.org', 'admin,', 'Password')
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -201,7 +201,7 @@ def admin_console():
     currentPromotions, expiredPromotions, upcomingPromotions = get_all_promotions(url_template)
     promo_arr = currentPromotions + upcomingPromotions + expiredPromotions
     promo_abbr = [{'abbrv':f"{item.abbreviation}", 'id':f"{item.promo_id}", 'winner_data': get_promotion_winners(item.promo_id) } for item in promo_arr]
-    logging.info(f"promotion management: {promo_abbr[0]['winner_data']}")
+    # logging.info(f"promotion management: {promo_abbr[0]['winner_data']}")
     return render_template('admin_console.html', records=promo_abbr)
 def get_roles():
     logging.info('getting roles')
@@ -213,7 +213,19 @@ def get_roles():
     logging.info(f'promo abbre: {promo_abbr}')
     options = ['admin', 'user', 'create', 'manage'] + promo_abbr
     return options
-
+@admin_bp.route('/export', methods=['Get'])
+@role_required('admin,manage')
+@login_required
+def export_database():
+    buffer = export_db()
+    response = Response(
+        buffer.getvalue(),
+        mimetype="application/sql",
+        headers={
+            "Content-Disposition": "attachment; filename=database_export.sql"
+        },
+    )
+    return response
 
 # Utility function to get routes for a specific blueprint
 def get_routes_for_blueprint(blueprint_name):

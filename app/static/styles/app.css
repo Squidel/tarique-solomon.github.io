@@ -22,6 +22,7 @@ body {
     width: 100%; 
     /* background-image: linear-gradient(90deg, #74D7BB, #53C8B6, #35A99C);  */
     background-color: transparent; 
+    z-index: 100;
 } 
 
 .cs-navbar > div{
@@ -223,7 +224,8 @@ body {
 
 /* Footer Styles */
 .footer { 
-    background-color: #000; 
+    /* background-color: #000;  */
+    background-color: #ffd000;
     color: #fff; 
     padding: 2rem; 
 } 
@@ -606,7 +608,9 @@ body {
     color: #000;
 }
         /* End of code for Contracts Dashboard */
-
+#running-projects-card{
+    max-height: inherit !important;
+}
 .card-parent {
     background-color: #fff;
     box-shadow: 3px 3px 20px 0px rgba(0, 0, 0, 0.1);
@@ -970,6 +974,6 @@ body {
 }
 .theme-colour{
     /* background-color: #042554; */
-    background-image: linear-gradient(180deg, #042554, #000);
+    background-image: linear-gradient(180deg, #042554, #ffd000);
     /* color:white; */
 }

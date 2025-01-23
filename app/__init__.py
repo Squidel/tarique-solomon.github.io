@@ -2,7 +2,7 @@ from flask import Flask
 from dotenv import load_dotenv
 import os, logging
 from flask_sqlalchemy import SQLAlchemy
-from app.app_config import DevelopmentConfig, ProductionConfig
+from app.app_config import DevelopmentConfig, ProductionConfig, Config
 from app.error_handlers import set_error_handlers
 from flask_login import LoginManager
 
@@ -25,9 +25,10 @@ def create_app():
     else:
         app.config.from_object(ProductionConfig)
         logging.info("Using production config")
-
-
-    print("Database URL:", app.config['SQLALCHEMY_DATABASE_URI'])
+        
+    db_path = app.config['SQLALCHEMY_DATABASE_URI']
+    Config.init_config(app)
+    print("Database URL:", db_path)
     
     db.init_app(app)
     with app.app_context():
