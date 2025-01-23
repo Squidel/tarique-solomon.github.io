@@ -9,7 +9,7 @@ from flask_login import LoginManager
 
 import sqlite3
 
-logging.basicConfig(level=logging.DEBUG, filename='logs/debug.log', format='%(asctime)s %(levelname)s %(name)s : %(message)s')
+logging.basicConfig(level=logging.DEBUG, filename='/tmp/debug.log', format='%(asctime)s %(levelname)s %(name)s : %(message)s')
 
 db = SQLAlchemy()
 
