@@ -11,8 +11,7 @@ db_user = os.getenv('DB_USER')
 db_password = os.getenv('DB_PASSWORD')
 
 
-logging.basicConfig(filename='tmp/app.log', level=logging.INFO,
-                    format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+logging.basicConfig(level=logging.INFO,format='%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 class Config:
     DEBUG = False
