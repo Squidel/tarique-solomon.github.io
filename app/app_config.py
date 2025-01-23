@@ -29,9 +29,13 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     IsSQlite = False
+    db_path = os.getenv('DATABASE_URL')
     if(os.getenv('IsSQLite')== 'True'):
         IsSQlite = True
-    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')
+        basedir = os.path.abspath(os.path.dirname(__file__))  # Base directory of your project
+        path = os.path.join(basedir, os.getenv('DATABASE_URL'))
+        db_path = f"sqlite:///{path.replace('\\', '/')}"
+    SQLALCHEMY_DATABASE_URI = db_path
     #SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://localhost/PerformanceAppraisal?driver=ODBC+Driver+18+for+SQL+Server&Trusted_Connection=yes&TrustServerCertificate=yes"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
